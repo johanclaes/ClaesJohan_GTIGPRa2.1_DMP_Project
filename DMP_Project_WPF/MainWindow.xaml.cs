@@ -24,5 +24,29 @@ namespace DMP_Project_WPF
         {
             InitializeComponent();
         }
+
+        private void ZoekEvents_Click(object sender, RoutedEventArgs e)
+        {
+            ZoekEvent ZoekEventWindow = new ZoekEvent();
+            ZoekEventWindow.ShowDialog();
+        }
+
+        private void EventToevoegen_Click(object sender, RoutedEventArgs e)
+        {
+            var myForm = new UsernamePassword();
+            myForm.Show();
+        }
+
+        private void ToonPlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            var myForm = new Geboortedatum();
+            myForm.Show();
+        }
+
+        private void ComedianToevoegen_Click(object sender, RoutedEventArgs e)
+        {
+            var myForm = new Boekingsbureau();
+            myForm.Show();
+        }
     }
 }

@@ -7,6 +7,24 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Name="tbGo4comedy" Grid.Row="0" Grid.Column="1"  Text="www.go4comedy.be" FontSize="24" VerticalAlignment="Center"/>
+        <Image Source="comedy.png" Grid.Row="1" Grid.Column="1" Grid.RowSpan="3 " Height="150" Width="150" />
+        <Button x:Name="btnZoekEvents" Grid.Row="1" Grid.Column="0" Margin="20" Content="Zoek Events" Background="#FF91CD8C" Click="ZoekEvents_Click"/>
+        <Button x:Name="btnEventToevoegen" Grid.Row="3" Grid.Column="0" Margin="20" Content="Event Toevoegen" Background="#FF9292EA" Click="EventToevoegen_Click"/>
+        <Button x:Name="btnToonPlaylist" Grid.Row="1" Grid.Column="2" Margin="20" Content="Toon Playlist" Background="#FFE8A39C" Click="ToonPlaylist_Click"/>
+        <Button x:Name="btnComedianToevoegen" Grid.Row="3" Grid.Column="2" Margin="20" Content="Comedian Toevoegen" Background="#FFF0CE92" Click="ComedianToevoegen_Click"/>
+    
     </Grid>
 </Window>

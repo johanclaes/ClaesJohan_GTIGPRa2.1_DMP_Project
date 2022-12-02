@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DMP_Project_DAL;
+using DMP_Project_Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,51 @@ namespace DMP_Project_WPF
     /// </summary>
     public partial class ToonPlaylist : Window
     {
-        public ToonPlaylist()
+        public ToonPlaylist(string naam3)
         {
             InitializeComponent();
+
+            // MessageBox.Show(naam3);                          // toon de naam van de comedian
+            // string sql = "SELECT * FROM Comedy.Comedian";
+            // sql += " ORDER BY naam";
+
+            // string sql = "SELECT DISTINCT Event.naam, DatumUur.datum, LEFT(convert(varchar, DatumUur.tijdstip),5), Locatie.naam, Locatie.gemeente,LocatieContact.naam,LocatieContact.telefoonNummer";
+            string sql = "SELECT EV.id, EV.naam, EV.kaartenVrij, EventComedian.id, CO.id, DA.datumTijdstip  ";
+            sql += " FROM Comedy.Event AS EV";
+            sql += " INNER JOIN Comedy.EventComedian ON EV.id = EventComedian.eventId";
+            sql += " INNER JOIN Comedy.Comedian AS CO ON  EventComedian.comedianId = CO.id";
+            sql += " INNER JOIN Comedy.DatumUur AS DA ON EV.id = DA.eventId";
+            sql += " WHERE  CO.naam = 'Boeva' ";
+
+            // sql += " INNER JOIN Comedy.EventComedian ON Event.id = EventComedian.eventId";
+            // sql += " INNER JOIN Comedy.Comedian ON EventComedian.comedianId = Comedian.id";
+            // sql += " JOIN Comedy.DatumUur ON Event.id = DatumUur.eventId";
+            // sql += " JOIN Comedy.EventLocatie ON Event.id = EventLocatie.eventId";
+            // sql += " JOIN Comedy.Locatie ON EventLocatie.locatieId = Locatie.id";
+            // sql += " JOIN Comedy.LocatieContact ON Locatie.id = LocatieContact.locatieId";
+            // sql += " WHERE  Comedian.geboortedatum = '1954-10-28'";
+            // sql += " WHERE  Comedian.naam = 'Boeva' ";
+            // sql += " ORDER BY DatumUur.datum";
+
+
+
+            // lijstcomedians = DatabaseOperations.OphalenComediansOpNaamGesorteerd(sql);
+
+            // dataComedians.ItemsSource = lijstcomedians;
+
+            lijstplaylistevents = DatabaseOperations.MaakPlaylist2(sql);         // je kan niet zomaar type1 op type2 mappen
+
+            dataComedians.ItemsSource = lijstplaylistevents;
+
+            lblComedianName.Content = naam3;
+        }
+
+        List<Comedian> lijstcomedians = new List<Comedian>();
+        List<PlayListEvent> lijstplaylistevents = new List<PlayListEvent>();
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

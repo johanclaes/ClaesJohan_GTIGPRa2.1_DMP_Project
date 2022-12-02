@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DMP_Project_WPF"
         mc:Ignorable="d"
-        Title="ToonPlaylist" Height="450" Width="800">
+        Title="ToonPlaylist" Height="450" Width="800" Background="#FFE8A39C" Loaded="Window_Loaded">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Dit is de Playlist van " Grid.Row="0" Grid.Column="0" Margin="5" FontFamily="Segoe Script" FontSize="20"/>
+        <Label x:Name="lblComedianName" Grid.Row="0" Grid.Column="1" FontSize="20" FontFamily="Segoe Script"/>
+
+
+        <DataGrid x:Name="dataComedians" AutoGenerateColumns="true" Margin="5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+
+        </DataGrid>
     </Grid>
 </Window>

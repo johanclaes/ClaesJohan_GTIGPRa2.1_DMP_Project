@@ -23,5 +23,20 @@ namespace DMP_Project_WPF
         {
             InitializeComponent();
         }
+
+        private void VoegEventToe_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BTNUpdateEvent_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BTNComedianToevoegen_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

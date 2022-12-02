@@ -35,8 +35,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper.StrongName, Version=2.0.0.0, Culture=neutral, PublicKeyToken=e3e8412083d25dd3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.StrongName.2.0.123\lib\net461\Dapper.StrongName.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,11 +60,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Boekingsbureau.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Boekingsbureau.Designer.cs">
+      <DependentUpon>Boekingsbureau.cs</DependentUpon>
+    </Compile>
     <Compile Include="EventToevoegen.xaml.cs">
       <DependentUpon>EventToevoegen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Geboortedatum.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Geboortedatum.Designer.cs">
+      <DependentUpon>Geboortedatum.cs</DependentUpon>
+    </Compile>
     <Compile Include="ToonPlaylist.xaml.cs">
       <DependentUpon>ToonPlaylist.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UsernamePassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UsernamePassword.Designer.cs">
+      <DependentUpon>UsernamePassword.cs</DependentUpon>
     </Compile>
     <Compile Include="ZoekEvent.xaml.cs">
       <DependentUpon>ZoekEvent.xaml</DependentUpon>
@@ -110,10 +133,20 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Boekingsbureau.resx">
+      <DependentUpon>Boekingsbureau.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Geboortedatum.resx">
+      <DependentUpon>Geboortedatum.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="UsernamePassword.resx">
+      <DependentUpon>UsernamePassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -121,6 +154,19 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="comedy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DMP_Project_DAL\DMP_Project_DAL.csproj">
+      <Project>{2e107c6d-9c5b-4291-ac65-e49d6e895b50}</Project>
+      <Name>DMP_Project_DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DMP_Project_Models\DMP_Project_Models.csproj">
+      <Project>{69af7bd2-06af-4d63-9f96-a2f3e2094688}</Project>
+      <Name>DMP_Project_Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
