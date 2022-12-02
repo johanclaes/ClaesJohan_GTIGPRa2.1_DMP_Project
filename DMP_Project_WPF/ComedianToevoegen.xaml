@@ -9,8 +9,8 @@
     <Grid>
         <Button x:Name="btnVoegToe" Content="Voeg Comedian Toe" HorizontalAlignment="Left" Margin="572,33,0,0" VerticalAlignment="Top" Width="142" Click="BTNVoegToe_Click"/>
         <Button x:Name="btnVerwijder" Content="Verwijder Comedian" HorizontalAlignment="Left" Margin="572,76,0,0" VerticalAlignment="Top" Width="142" Click="BTNVerwijder_Click"/>
-        <ListBox x:Name="lbComedians" HorizontalAlignment="Left" Height="165" Margin="284,224,0,0" VerticalAlignment="Top" Width="458"/>
-        <ComboBox x:Name="cmbComedians" HorizontalAlignment="Left" Height="50" Margin="523,126,0,0" VerticalAlignment="Top" Width="207"/>
+        <ListBox x:Name="lbComedians" HorizontalAlignment="Left" Height="120" Margin="425,269,0,0" VerticalAlignment="Top" Width="317"/>
+        <ComboBox x:Name="cmbComedians" HorizontalAlignment="Left" Height="50" Margin="535,167,0,0" VerticalAlignment="Top" Width="207" RenderTransformOrigin="0.401,1.378"/>
 
         <GroupBox Header="Nieuwe Comedian" Margin="26,20,401.6,218">
             <StackPanel Margin="0,0,176.2,-13.6">
@@ -21,7 +21,8 @@
                 <Button  x:Name="btnMaakComedianAan" Content="Maak comedian aan" Margin="5" Click="BTNMaakComedianAan_Click"/>
             </StackPanel>
         </GroupBox>
-        <TextBlock HorizontalAlignment="Left" Margin="410,195,0,0" TextWrapping="Wrap" Text="Comedians onder contract" VerticalAlignment="Top" FontSize="18"/>
+        <TextBlock HorizontalAlignment="Left" Margin="425,240,0,0" TextWrapping="Wrap" Text="Comedians onder contract" VerticalAlignment="Top" FontSize="18" RenderTransformOrigin="0.531,1.845"/>
+        <TextBlock HorizontalAlignment="Left" Margin="535,138,0,0" TextWrapping="Wrap" Text="Comedians zonder buro" VerticalAlignment="Top" FontSize="18" RenderTransformOrigin="0.531,1.845"/>
 
     </Grid>
 </Window>

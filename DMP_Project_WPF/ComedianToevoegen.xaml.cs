@@ -20,13 +20,26 @@ namespace DMP_Project_WPF
     /// </summary>
     public partial class ComedianToevoegen : Window
     {
-        public ComedianToevoegen()
+        public ComedianToevoegen(int boekingsburoid)
         {
             InitializeComponent();
+            // MessageBox.Show(boekingsburoid.ToString());
+            List<Comedian> lijstcomedians2 = new List<Comedian>();
+            string sql = "SELECT * FROM Comedy.Comedian";
+            sql += " WHERE boekingsburoid = @id2 ";
+            sql += " ORDER BY naam";
+
+            lijstcomedians2 = DatabaseOperations.OphalenComediansVan1Buro(sql,boekingsburoid);
+            foreach (Comedian comedian1 in lijstcomedians2)
+            {
+                stringlijstcomedians2.Add(comedian1.voornaam + " " + comedian1.naam);
+            }
+            lbComedians.ItemsSource = stringlijstcomedians2;
         }
 
         List<Comedian> lijstcomedians = new List<Comedian>();
         List<string> stringlijstcomedians = new List<string>();
+        List<string> stringlijstcomedians2 = new List<string>();
 
         private void BTNVoegToe_Click(object sender, RoutedEventArgs e)
         {
@@ -61,7 +74,7 @@ namespace DMP_Project_WPF
             // comedians van hun boekingsbureau, zie je in de listbox
 
 
-            lbComedians.ItemsSource = stringlijstcomedians;
+            // lbComedians.ItemsSource = stringlijstcomedians;
         }
     }
 }

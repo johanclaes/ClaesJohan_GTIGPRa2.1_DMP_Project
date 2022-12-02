@@ -1,0 +1,553 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ComedyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Boekingsburo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="naam" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="telefoon" Type="varchar" MaxLength="20" />
+          <Property Name="email" Type="varchar" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comedian">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="naam" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="voornaam" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="geboortedatum" Type="date" />
+          <Property Name="boekingsburoid" Type="int" />
+        </EntityType>
+        <EntityType Name="DatumUur">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="eventId" Type="int" Nullable="false" />
+          <Property Name="datumTijdstip" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="naam" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="rolstoel" Type="bit" />
+          <Property Name="kaartenVrij" Type="bit" Nullable="false" />
+          <Property Name="cafeSetting" Type="bit" />
+          <Property Name="prijs" Type="smallmoney" />
+          <Property Name="website" Type="varchar" MaxLength="40" />
+          <Property Name="leeftijd" Type="varchar" MaxLength="12" />
+        </EntityType>
+        <EntityType Name="EventComedian">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="eventId" Type="int" Nullable="false" />
+          <Property Name="comedianId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EventLocatie">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="eventId" Type="int" Nullable="false" />
+          <Property Name="locatieId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Locatie">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="naam" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="adres" Type="varchar" MaxLength="40" />
+          <Property Name="gemeente" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="provincie" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="gebouwType" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="LocatieContact">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="naam" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="voornaam" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="loginName" Type="varchar" MaxLength="20" />
+          <Property Name="loginPassword" Type="varchar" MaxLength="20" />
+          <Property Name="telefoonNummer" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="locatieId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Comedian_Boekingsburo">
+          <End Role="Boekingsburo" Type="Self.Boekingsburo" Multiplicity="0..1" />
+          <End Role="Comedian" Type="Self.Comedian" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Boekingsburo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Comedian">
+              <PropertyRef Name="boekingsburoid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DatumUur_Event">
+          <End Role="Event" Type="Self.Event" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DatumUur" Type="Self.DatumUur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DatumUur">
+              <PropertyRef Name="eventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventComedian_Comedian">
+          <End Role="Comedian" Type="Self.Comedian" Multiplicity="1" />
+          <End Role="EventComedian" Type="Self.EventComedian" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comedian">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EventComedian">
+              <PropertyRef Name="comedianId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventComedian_Event">
+          <End Role="Event" Type="Self.Event" Multiplicity="1" />
+          <End Role="EventComedian" Type="Self.EventComedian" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EventComedian">
+              <PropertyRef Name="eventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventLocatie_Event">
+          <End Role="Event" Type="Self.Event" Multiplicity="1" />
+          <End Role="EventLocatie" Type="Self.EventLocatie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EventLocatie">
+              <PropertyRef Name="eventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventLocatie_Locatie">
+          <End Role="Locatie" Type="Self.Locatie" Multiplicity="1" />
+          <End Role="EventLocatie" Type="Self.EventLocatie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locatie">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EventLocatie">
+              <PropertyRef Name="locatieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LocatieContact_Locatie">
+          <End Role="Locatie" Type="Self.Locatie" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LocatieContact" Type="Self.LocatieContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locatie">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="LocatieContact">
+              <PropertyRef Name="locatieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ComedyModelStoreContainer">
+          <EntitySet Name="Boekingsburo" EntityType="Self.Boekingsburo" Schema="Comedy" store:Type="Tables" />
+          <EntitySet Name="Comedian" EntityType="Self.Comedian" Schema="Comedy" store:Type="Tables" />
+          <EntitySet Name="DatumUur" EntityType="Self.DatumUur" Schema="Comedy" store:Type="Tables" />
+          <EntitySet Name="Event" EntityType="Self.Event" Schema="Comedy" store:Type="Tables" />
+          <EntitySet Name="EventComedian" EntityType="Self.EventComedian" Schema="Comedy" store:Type="Tables" />
+          <EntitySet Name="EventLocatie" EntityType="Self.EventLocatie" Schema="Comedy" store:Type="Tables" />
+          <EntitySet Name="Locatie" EntityType="Self.Locatie" Schema="Comedy" store:Type="Tables" />
+          <EntitySet Name="LocatieContact" EntityType="Self.LocatieContact" Schema="Comedy" store:Type="Tables" />
+          <AssociationSet Name="FK_Comedian_Boekingsburo" Association="Self.FK_Comedian_Boekingsburo">
+            <End Role="Boekingsburo" EntitySet="Boekingsburo" />
+            <End Role="Comedian" EntitySet="Comedian" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DatumUur_Event" Association="Self.FK_DatumUur_Event">
+            <End Role="Event" EntitySet="Event" />
+            <End Role="DatumUur" EntitySet="DatumUur" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventComedian_Comedian" Association="Self.FK_EventComedian_Comedian">
+            <End Role="Comedian" EntitySet="Comedian" />
+            <End Role="EventComedian" EntitySet="EventComedian" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventComedian_Event" Association="Self.FK_EventComedian_Event">
+            <End Role="Event" EntitySet="Event" />
+            <End Role="EventComedian" EntitySet="EventComedian" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventLocatie_Event" Association="Self.FK_EventLocatie_Event">
+            <End Role="Event" EntitySet="Event" />
+            <End Role="EventLocatie" EntitySet="EventLocatie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventLocatie_Locatie" Association="Self.FK_EventLocatie_Locatie">
+            <End Role="Locatie" EntitySet="Locatie" />
+            <End Role="EventLocatie" EntitySet="EventLocatie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LocatieContact_Locatie" Association="Self.FK_LocatieContact_Locatie">
+            <End Role="Locatie" EntitySet="Locatie" />
+            <End Role="LocatieContact" EntitySet="LocatieContact" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ComedyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Boekingsburo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="naam" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefoon" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Comedians" Relationship="Self.FK_Comedian_Boekingsburo" FromRole="Boekingsburo" ToRole="Comedian" />
+        </EntityType>
+        <EntityType Name="Comedian">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="naam" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="voornaam" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="geboortedatum" Type="DateTime" Precision="0" />
+          <Property Name="boekingsburoid" Type="Int32" />
+          <NavigationProperty Name="Boekingsburo" Relationship="Self.FK_Comedian_Boekingsburo" FromRole="Comedian" ToRole="Boekingsburo" />
+          <NavigationProperty Name="EventComedians" Relationship="Self.FK_EventComedian_Comedian" FromRole="Comedian" ToRole="EventComedian" />
+        </EntityType>
+        <EntityType Name="DatumUur">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="eventId" Type="Int32" Nullable="false" />
+          <Property Name="datumTijdstip" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Event" Relationship="Self.FK_DatumUur_Event" FromRole="DatumUur" ToRole="Event" />
+        </EntityType>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="naam" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="rolstoel" Type="Boolean" />
+          <Property Name="kaartenVrij" Type="Boolean" Nullable="false" />
+          <Property Name="cafeSetting" Type="Boolean" />
+          <Property Name="prijs" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="website" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="leeftijd" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DatumUurs" Relationship="Self.FK_DatumUur_Event" FromRole="Event" ToRole="DatumUur" />
+          <NavigationProperty Name="EventComedians" Relationship="Self.FK_EventComedian_Event" FromRole="Event" ToRole="EventComedian" />
+          <NavigationProperty Name="EventLocaties" Relationship="Self.FK_EventLocatie_Event" FromRole="Event" ToRole="EventLocatie" />
+        </EntityType>
+        <EntityType Name="EventComedian">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="eventId" Type="Int32" Nullable="false" />
+          <Property Name="comedianId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Comedian" Relationship="Self.FK_EventComedian_Comedian" FromRole="EventComedian" ToRole="Comedian" />
+          <NavigationProperty Name="Event" Relationship="Self.FK_EventComedian_Event" FromRole="EventComedian" ToRole="Event" />
+        </EntityType>
+        <EntityType Name="EventLocatie">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="eventId" Type="Int32" Nullable="false" />
+          <Property Name="locatieId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Event" Relationship="Self.FK_EventLocatie_Event" FromRole="EventLocatie" ToRole="Event" />
+          <NavigationProperty Name="Locatie" Relationship="Self.FK_EventLocatie_Locatie" FromRole="EventLocatie" ToRole="Locatie" />
+        </EntityType>
+        <EntityType Name="Locatie">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="naam" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="adres" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="gemeente" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="provincie" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="gebouwType" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EventLocaties" Relationship="Self.FK_EventLocatie_Locatie" FromRole="Locatie" ToRole="EventLocatie" />
+          <NavigationProperty Name="LocatieContacts" Relationship="Self.FK_LocatieContact_Locatie" FromRole="Locatie" ToRole="LocatieContact" />
+        </EntityType>
+        <EntityType Name="LocatieContact">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="naam" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="voornaam" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="loginName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="loginPassword" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="telefoonNummer" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="locatieId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Locatie" Relationship="Self.FK_LocatieContact_Locatie" FromRole="LocatieContact" ToRole="Locatie" />
+        </EntityType>
+        <Association Name="FK_Comedian_Boekingsburo">
+          <End Role="Boekingsburo" Type="Self.Boekingsburo" Multiplicity="0..1" />
+          <End Role="Comedian" Type="Self.Comedian" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Boekingsburo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Comedian">
+              <PropertyRef Name="boekingsburoid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventComedian_Comedian">
+          <End Role="Comedian" Type="Self.Comedian" Multiplicity="1" />
+          <End Role="EventComedian" Type="Self.EventComedian" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comedian">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EventComedian">
+              <PropertyRef Name="comedianId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DatumUur_Event">
+          <End Role="Event" Type="Self.Event" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DatumUur" Type="Self.DatumUur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DatumUur">
+              <PropertyRef Name="eventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventComedian_Event">
+          <End Role="Event" Type="Self.Event" Multiplicity="1" />
+          <End Role="EventComedian" Type="Self.EventComedian" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EventComedian">
+              <PropertyRef Name="eventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventLocatie_Event">
+          <End Role="Event" Type="Self.Event" Multiplicity="1" />
+          <End Role="EventLocatie" Type="Self.EventLocatie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EventLocatie">
+              <PropertyRef Name="eventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventLocatie_Locatie">
+          <End Role="Locatie" Type="Self.Locatie" Multiplicity="1" />
+          <End Role="EventLocatie" Type="Self.EventLocatie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locatie">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EventLocatie">
+              <PropertyRef Name="locatieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LocatieContact_Locatie">
+          <End Role="Locatie" Type="Self.Locatie" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LocatieContact" Type="Self.LocatieContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locatie">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="LocatieContact">
+              <PropertyRef Name="locatieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ComedyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Boekingsburoes" EntityType="Self.Boekingsburo" />
+          <EntitySet Name="Comedians" EntityType="Self.Comedian" />
+          <EntitySet Name="DatumUurs" EntityType="Self.DatumUur" />
+          <EntitySet Name="Events" EntityType="Self.Event" />
+          <EntitySet Name="EventComedians" EntityType="Self.EventComedian" />
+          <EntitySet Name="EventLocaties" EntityType="Self.EventLocatie" />
+          <EntitySet Name="Locaties" EntityType="Self.Locatie" />
+          <EntitySet Name="LocatieContacts" EntityType="Self.LocatieContact" />
+          <AssociationSet Name="FK_Comedian_Boekingsburo" Association="Self.FK_Comedian_Boekingsburo">
+            <End Role="Boekingsburo" EntitySet="Boekingsburoes" />
+            <End Role="Comedian" EntitySet="Comedians" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventComedian_Comedian" Association="Self.FK_EventComedian_Comedian">
+            <End Role="Comedian" EntitySet="Comedians" />
+            <End Role="EventComedian" EntitySet="EventComedians" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DatumUur_Event" Association="Self.FK_DatumUur_Event">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="DatumUur" EntitySet="DatumUurs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventComedian_Event" Association="Self.FK_EventComedian_Event">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="EventComedian" EntitySet="EventComedians" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventLocatie_Event" Association="Self.FK_EventLocatie_Event">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="EventLocatie" EntitySet="EventLocaties" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventLocatie_Locatie" Association="Self.FK_EventLocatie_Locatie">
+            <End Role="Locatie" EntitySet="Locaties" />
+            <End Role="EventLocatie" EntitySet="EventLocaties" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LocatieContact_Locatie" Association="Self.FK_LocatieContact_Locatie">
+            <End Role="Locatie" EntitySet="Locaties" />
+            <End Role="LocatieContact" EntitySet="LocatieContacts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ComedyModelStoreContainer" CdmEntityContainer="ComedyEntities">
+          <EntitySetMapping Name="Boekingsburoes">
+            <EntityTypeMapping TypeName="ComedyModel.Boekingsburo">
+              <MappingFragment StoreEntitySet="Boekingsburo">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="naam" ColumnName="naam" />
+                <ScalarProperty Name="telefoon" ColumnName="telefoon" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comedians">
+            <EntityTypeMapping TypeName="ComedyModel.Comedian">
+              <MappingFragment StoreEntitySet="Comedian">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="naam" ColumnName="naam" />
+                <ScalarProperty Name="voornaam" ColumnName="voornaam" />
+                <ScalarProperty Name="geboortedatum" ColumnName="geboortedatum" />
+                <ScalarProperty Name="boekingsburoid" ColumnName="boekingsburoid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DatumUurs">
+            <EntityTypeMapping TypeName="ComedyModel.DatumUur">
+              <MappingFragment StoreEntitySet="DatumUur">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="eventId" ColumnName="eventId" />
+                <ScalarProperty Name="datumTijdstip" ColumnName="datumTijdstip" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Events">
+            <EntityTypeMapping TypeName="ComedyModel.Event">
+              <MappingFragment StoreEntitySet="Event">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="naam" ColumnName="naam" />
+                <ScalarProperty Name="rolstoel" ColumnName="rolstoel" />
+                <ScalarProperty Name="kaartenVrij" ColumnName="kaartenVrij" />
+                <ScalarProperty Name="cafeSetting" ColumnName="cafeSetting" />
+                <ScalarProperty Name="prijs" ColumnName="prijs" />
+                <ScalarProperty Name="website" ColumnName="website" />
+                <ScalarProperty Name="leeftijd" ColumnName="leeftijd" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventComedians">
+            <EntityTypeMapping TypeName="ComedyModel.EventComedian">
+              <MappingFragment StoreEntitySet="EventComedian">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="eventId" ColumnName="eventId" />
+                <ScalarProperty Name="comedianId" ColumnName="comedianId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventLocaties">
+            <EntityTypeMapping TypeName="ComedyModel.EventLocatie">
+              <MappingFragment StoreEntitySet="EventLocatie">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="eventId" ColumnName="eventId" />
+                <ScalarProperty Name="locatieId" ColumnName="locatieId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locaties">
+            <EntityTypeMapping TypeName="ComedyModel.Locatie">
+              <MappingFragment StoreEntitySet="Locatie">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="naam" ColumnName="naam" />
+                <ScalarProperty Name="adres" ColumnName="adres" />
+                <ScalarProperty Name="gemeente" ColumnName="gemeente" />
+                <ScalarProperty Name="provincie" ColumnName="provincie" />
+                <ScalarProperty Name="gebouwType" ColumnName="gebouwType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LocatieContacts">
+            <EntityTypeMapping TypeName="ComedyModel.LocatieContact">
+              <MappingFragment StoreEntitySet="LocatieContact">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="naam" ColumnName="naam" />
+                <ScalarProperty Name="voornaam" ColumnName="voornaam" />
+                <ScalarProperty Name="loginName" ColumnName="loginName" />
+                <ScalarProperty Name="loginPassword" ColumnName="loginPassword" />
+                <ScalarProperty Name="telefoonNummer" ColumnName="telefoonNummer" />
+                <ScalarProperty Name="locatieId" ColumnName="locatieId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
