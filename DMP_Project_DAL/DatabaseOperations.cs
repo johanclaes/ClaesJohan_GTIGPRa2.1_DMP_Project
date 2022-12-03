@@ -52,35 +52,39 @@ namespace DMP_Project_DAL
 
             DateTime dendatum = DateTime.Parse("15/12/2022 20:15");
 
-            PlayListEvent gezelligeAvond = new PlayListEvent("lachen1", "werft1", "Geel", dendatum, "Paul Maes", "+32475891999");
+            PlayListEvent gezelligeAvond = new PlayListEvent("lachen1", "werft1", "Geel", dendatum, "Paul Maes", "+32475891999",true);
             playlist.Add(gezelligeAvond);
 
             
 
-            gezelligeAvond = new PlayListEvent("moppen_tappen", "het getouw1", "Mol", dendatum, "Maria Jansen","+3214123456");
+            gezelligeAvond = new PlayListEvent("moppen_tappen", "het getouw1", "Mol", dendatum, "Maria Jansen","+3214123456",false);
 
             playlist.Add(gezelligeAvond);
 
             return playlist;                      
         }
 
-        public static List<PlayListEvent> MaakPlaylist2(string sqlQuery)
+        public static List<PlayListEvent> MaakPlaylist2(string sqlQuery,string naam3)
         {
 
             List<PlayListEvent> playlist = new List<PlayListEvent>();
 
-            var result = _db.Connectie.Query<   Event, EventComedian, Comedian, Event>(sqlQuery, (Event, EventComedian, Comedian) =>
+            var result = _db.Connectie.Query<Event, EventComedian, Comedian, Event>(sqlQuery,  (Event, EventComedian, Comedian)  =>
              {
-                 
                  Event event1 ;
                  event1 = Event;
                  return event1;
              }
+             , param: new { naam3 = naam3 }
              , splitOn: "id,id").Distinct().ToList();
 
-
-            PlayListEvent gezelligeAvond = new PlayListEvent("lachen", "werft", "Geel");
-            playlist.Add(gezelligeAvond);
+            foreach (var comedyEvent1 in result)
+            {
+                // string abc = comedyEvent1.naam;
+                // bool abc = (bool)comedyEvent1.cafeSetting;
+                PlayListEvent gezelligeAvond = new PlayListEvent(comedyEvent1.naam, "werft", "Geel",DateTime.Parse("15/05/2022"),"maria","+32 2 1234567", (bool)comedyEvent1.cafeSetting);
+                playlist.Add(gezelligeAvond);
+            }
 
             return playlist;
         }

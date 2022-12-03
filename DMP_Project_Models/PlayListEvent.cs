@@ -13,11 +13,15 @@ namespace DMP_Project_Models
 
         public string LocatieGemeente { get; set; }
 
+        
+
         public DateTime Tijdstip { get; set; }
 
         public string LocatieContact { get; set; }
 
         public string ContactTelefoon { get; set; }
+
+        public bool CafeSetting { get; set; }
 
         public PlayListEvent(string eventNaam, string locatieNaam, string locatieGemeente)
         {
@@ -26,7 +30,8 @@ namespace DMP_Project_Models
             LocatieGemeente = locatieGemeente;
         }
 
-        public PlayListEvent(string eventNaam, string locatieNaam, string locatieGemeente, DateTime tijdstip, string locatieContact, string contactTelefoon) : this(eventNaam, locatieNaam, locatieGemeente)
+        public PlayListEvent(string eventNaam, string locatieNaam, string locatieGemeente, DateTime tijdstip, string locatieContact, string contactTelefoon, bool cafesetting) : 
+            this(eventNaam, locatieNaam, locatieGemeente)
         {
             EventNaam = eventNaam;
             LocatieNaam = locatieNaam;
@@ -34,6 +39,7 @@ namespace DMP_Project_Models
             Tijdstip = tijdstip;
             LocatieContact = locatieContact;
             ContactTelefoon = contactTelefoon;
+            CafeSetting = cafesetting;
         }
     }
 }
