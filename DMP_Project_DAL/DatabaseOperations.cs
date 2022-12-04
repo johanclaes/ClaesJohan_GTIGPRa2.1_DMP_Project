@@ -65,7 +65,7 @@ namespace DMP_Project_DAL
             List<PlayListEvent> playlist = new List<PlayListEvent>();
 
             Start();
-            var result = _db.Connectie.Query<Event, EventComedian, Comedian, Event>(sqlQuery, (Event, EventComedian, Comedian) =>
+            var result = _db.Connectie.Query<Event, EventComedian, Comedian,  Event>(sqlQuery, (Event, EventComedian, Comedian) =>
             {
                 Event event1;
                 event1 = Event;
@@ -88,6 +88,7 @@ namespace DMP_Project_DAL
                 sql2 += " INNER JOIN Comedy.LocatieContact AS LOCO ON LO.id = LOCO.locatieId";
                 sql2 += " WHERE  EV.naam = @naam3 ";
 
+                Start();
                 var result2 = _db.Connectie.Query<Event, EventLocatie, Locatie, LocatieContact, Event>(sql2, (Event, EventLocatie, Locatie, LocatieContact) =>
                 {
                     LocatieContact locatiecontact4;
@@ -117,11 +118,34 @@ namespace DMP_Project_DAL
 
                 string eventLocatietje = result2.First().EventLocaties.First().Locatie.naam;
                 string eventGemeente = result2.First().EventLocaties.First().Locatie.gemeente;
-                string naamVerantwoordelijke = result2.First().EventLocaties.First().Locatie.LocatieContacts.First().naam + " ";
-                naamVerantwoordelijke += result2.First().EventLocaties.First().Locatie.LocatieContacts.First().voornaam;
+                string naamVerantwoordelijke = result2.First().EventLocaties.First().Locatie.LocatieContacts.First().voornaam + " ";
+                naamVerantwoordelijke += result2.First().EventLocaties.First().Locatie.LocatieContacts.First().naam;
                 string telefoonVerantwoordelijke = result2.First().EventLocaties.First().Locatie.LocatieContacts.First().telefoonNummer;
-                // DateTime tijdstipEvent = result2.First().DatumUurs.First().datumTijdstip;
-                DateTime tijdstipEvent = DateTime.Parse("15/05/2022");
+
+                string sql3 = "SELECT EV.id, DA.id, DA.datumTijdstip  ";
+                sql3 += " FROM Comedy.Event AS EV";
+                sql3 += " INNER JOIN Comedy.DatumUur AS DA ON EV.id = DA.eventId";
+                sql3 += " WHERE  EV.naam = @naam3 ";
+
+                Start();
+                var result3 = _db.Connectie.Query<Event, DatumUur, Event>(sql3, (Event, DatumUur) =>
+                {
+                    DatumUur datumuur5;
+                    datumuur5 = DatumUur;
+
+                    Event event1;
+                    event1 = Event;
+                    event1.DatumUurs.Add(datumuur5);
+
+                    return event1;
+                }
+             , param: new { naam3 = naamEventje }
+             , splitOn: "id,id,id").Distinct().ToList();
+                _db.Close();
+
+
+                DateTime tijdstipEvent = result3.First().DatumUurs.First().datumTijdstip;
+                // DateTime tijdstipEvent = DateTime.Parse("15/05/2022");
 
                 PlayListEvent gezelligeAvond = new PlayListEvent(naamEventje, eventLocatietje, eventGemeente, tijdstipEvent, naamVerantwoordelijke, telefoonVerantwoordelijke, (bool)comedyEvent1.cafeSetting);
                 playlist.Add(gezelligeAvond);
