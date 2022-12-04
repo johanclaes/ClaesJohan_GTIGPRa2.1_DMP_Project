@@ -30,22 +30,13 @@ namespace DMP_Project_WPF
             // sql += " ORDER BY naam";
 
             // string sql = "SELECT DISTINCT Event.naam, DatumUur.datum, LEFT(convert(varchar, DatumUur.tijdstip),5), Locatie.naam, Locatie.gemeente,LocatieContact.naam,LocatieContact.telefoonNummer";
-            string sql = "SELECT EV.id, EV.naam, EV.cafeSetting, EventComedian.id, CO.id, DA.datumTijdstip  ";
+            string sql = "SELECT EV.id, EV.naam, EV.cafeSetting, EventComedian.id, CO.id, DA.datumtijdstip  ";
             sql += " FROM Comedy.Event AS EV";
             sql += " INNER JOIN Comedy.EventComedian ON EV.id = EventComedian.eventId";
             sql += " INNER JOIN Comedy.Comedian AS CO ON  EventComedian.comedianId = CO.id";
             sql += " INNER JOIN Comedy.DatumUur AS DA ON EV.id = DA.eventId";
             sql += " WHERE  CO.naam = @naam3 ";
-            sql += " ORDER BY DA.datumTijdstip";
-
-
-            // sql += " INNER JOIN Comedy.EventComedian ON Event.id = EventComedian.eventId";
-            // sql += " INNER JOIN Comedy.Comedian ON EventComedian.comedianId = Comedian.id";
-            // sql += " JOIN Comedy.DatumUur ON Event.id = DatumUur.eventId";
-            // sql += " JOIN Comedy.EventLocatie ON Event.id = EventLocatie.eventId";
-            // sql += " JOIN Comedy.Locatie ON EventLocatie.locatieId = Locatie.id";
-            // sql += " JOIN Comedy.LocatieContact ON Locatie.id = LocatieContact.locatieId";
-            
+            // sql += " ORDER BY DA.datumTijdstip";
 
             lijstplaylistevents = DatabaseOperations.MaakPlaylist2(sql,naam3);         // je kan niet zomaar type1 op type2 mappen
 

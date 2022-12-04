@@ -49,16 +49,11 @@ namespace DMP_Project_DAL
         {
 
             List<PlayListEvent> playlist = new List<PlayListEvent>();
-
             DateTime dendatum = DateTime.Parse("15/12/2022 20:15");
-
+            
             PlayListEvent gezelligeAvond = new PlayListEvent("lachen1", "werft1", "Geel", dendatum, "Paul Maes", "+32475891999",true);
             playlist.Add(gezelligeAvond);
-
-            
-
             gezelligeAvond = new PlayListEvent("moppen_tappen", "het getouw1", "Mol", dendatum, "Maria Jansen","+3214123456",false);
-
             playlist.Add(gezelligeAvond);
 
             return playlist;                      
@@ -69,19 +64,41 @@ namespace DMP_Project_DAL
 
             List<PlayListEvent> playlist = new List<PlayListEvent>();
 
-            var result = _db.Connectie.Query<Event, EventComedian, Comedian, Event>(sqlQuery,  (Event, EventComedian, Comedian)  =>
-             {
-                 Event event1 ;
-                 event1 = Event;
-                 return event1;
-             }
+            Start();
+            var result = _db.Connectie.Query<Event, EventComedian, Comedian, Event>(sqlQuery, (Event, EventComedian, Comedian) =>
+            {
+                Event event1;
+                event1 = Event;
+                return event1;
+            }
              , param: new { naam3 = naam3 }
              , splitOn: "id,id").Distinct().ToList();
+            _db.Close();
+
+            
 
             foreach (var comedyEvent1 in result)
             {
-                // string abc = comedyEvent1.naam;
-                // bool abc = (bool)comedyEvent1.cafeSetting;
+                string naamEventje = comedyEvent1.naam;
+
+                string sql2 = "SELECT EV.id, EV.naam, EVLO.id, LO.id, LOCO.id  ";
+                sql2 += " FROM Comedy.Event AS EV";
+                sql2 += " INNER JOIN Comedy.EventLocatie AS EVLO ON EV.id = EVLO.eventId";
+                sql2 += " INNER JOIN Comedy.Locatie AS LO ON  EVLO.locatieId = LO.id";
+                sql2 += " INNER JOIN Comedy.LocatieContact AS LOCO ON LO.id = LOCO.locatieId";
+                sql2 += " WHERE  EV.naam = @naam3 ";
+
+                var result2 = _db.Connectie.Query<Event, EventLocatie, Locatie, LocatieContact, Event>(sql2, (Event, EventLocatie, Locatie, LocatieContact) =>
+                {
+                    Event event1;
+                    event1 = Event;
+                    return event1;
+                }
+             , param: new { naam3 = naamEventje }
+             , splitOn: "id,id,id").Distinct().ToList();
+                _db.Close();
+
+
                 PlayListEvent gezelligeAvond = new PlayListEvent(comedyEvent1.naam, "werft", "Geel",DateTime.Parse("15/05/2022"),"maria","+32 2 1234567", (bool)comedyEvent1.cafeSetting);
                 playlist.Add(gezelligeAvond);
             }
