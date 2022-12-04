@@ -26,10 +26,7 @@ namespace DMP_Project_WPF
             InitializeComponent();
 
             // MessageBox.Show(naam3);                          // toon de naam van de comedian
-            // string sql = "SELECT * FROM Comedy.Comedian";
-            // sql += " ORDER BY naam";
 
-            // string sql = "SELECT DISTINCT Event.naam, DatumUur.datum, LEFT(convert(varchar, DatumUur.tijdstip),5), Locatie.naam, Locatie.gemeente,LocatieContact.naam,LocatieContact.telefoonNummer";
             string sql = "SELECT EV.id, EV.naam, EV.cafeSetting, EventComedian.id, CO.id, DA.datumtijdstip  ";
             sql += " FROM Comedy.Event AS EV";
             sql += " INNER JOIN Comedy.EventComedian ON EV.id = EventComedian.eventId";

@@ -168,6 +168,36 @@ namespace DMP_Project_DAL
             return zoeklijst;
         }
 
+        public static List<Event2> ZoekEvents2(string sqlQuery,string provincie3)
+        {
+
+            List<Event2> zoeklijst = new List<Event2>();
+
+            Start();
+            var result3 = _db.Connectie.Query<Locatie, EventLocatie, Event, EventComedian, Comedian, Locatie>(sqlQuery, 
+                (Locatie, EventLocatie, Event, EventComedian, Comedian) =>
+            {
+                
+                Locatie locatie1;
+                locatie1 = Locatie;
+
+                
+
+                return locatie1;
+            }
+         , param: new { provincie = provincie3 }
+         , splitOn: "id,id,id,id").Distinct().ToList();
+            _db.Close();
+
+
+            DateTime dendatum = DateTime.Parse("15/12/2022 20:15");
+            Event2 gezelligeAvond = new Event2("lachen", dendatum, "werft", "Geel", true, 16);
+            zoeklijst.Add(gezelligeAvond);
+            
+
+            return zoeklijst;
+        }
+
         public static List<Boekingsburo> ZoekBuroOpBasisNaam(string sqlQuery,string naam2)
         {
             Start();
