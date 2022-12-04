@@ -75,14 +75,14 @@ namespace DMP_Project_DAL
              , splitOn: "id,id").Distinct().ToList();
             _db.Close();
 
-            
 
             foreach (var comedyEvent1 in result)
             {
                 string naamEventje = comedyEvent1.naam;
 
-                string sql2 = "SELECT EV.id, EV.naam, EVLO.id, LO.id, LOCO.id  ";
+                string sql2 = "SELECT EV.id, EV.naam, EVLO.id, LO.id, LO.naam, LO.gemeente, LOCO.id, LOCO.naam, LOCO.voornaam, LOCO.telefoonNummer  ";
                 sql2 += " FROM Comedy.Event AS EV";
+                sql2 += " INNER JOIN Comedy.DatumUur AS DA ON EV.id = DA.eventId";
                 sql2 += " INNER JOIN Comedy.EventLocatie AS EVLO ON EV.id = EVLO.eventId";
                 sql2 += " INNER JOIN Comedy.Locatie AS LO ON  EVLO.locatieId = LO.id";
                 sql2 += " INNER JOIN Comedy.LocatieContact AS LOCO ON LO.id = LOCO.locatieId";
@@ -90,16 +90,40 @@ namespace DMP_Project_DAL
 
                 var result2 = _db.Connectie.Query<Event, EventLocatie, Locatie, LocatieContact, Event>(sql2, (Event, EventLocatie, Locatie, LocatieContact) =>
                 {
+                    LocatieContact locatiecontact4;
+                    locatiecontact4 = LocatieContact;
+
+                    Locatie locatie3;
+                    locatie3 = Locatie;
+                    locatie3.LocatieContacts.Add(item: locatiecontact4);
+
+                    EventLocatie eventlocatie2;
+                    eventlocatie2 = EventLocatie;
+                    eventlocatie2.Locatie = locatie3;
+
+                    // DatumUur datumuur5;
+                    // datumuur5 = DatumUur;
+
                     Event event1;
                     event1 = Event;
+                    event1.EventLocaties.Add(item: eventlocatie2);
+                    // event1.DatumUurs.Add(datumuur5);
+                    
                     return event1;
                 }
              , param: new { naam3 = naamEventje }
              , splitOn: "id,id,id").Distinct().ToList();
                 _db.Close();
 
+                string eventLocatietje = result2.First().EventLocaties.First().Locatie.naam;
+                string eventGemeente = result2.First().EventLocaties.First().Locatie.gemeente;
+                string naamVerantwoordelijke = result2.First().EventLocaties.First().Locatie.LocatieContacts.First().naam + " ";
+                naamVerantwoordelijke += result2.First().EventLocaties.First().Locatie.LocatieContacts.First().voornaam;
+                string telefoonVerantwoordelijke = result2.First().EventLocaties.First().Locatie.LocatieContacts.First().telefoonNummer;
+                // DateTime tijdstipEvent = result2.First().DatumUurs.First().datumTijdstip;
+                DateTime tijdstipEvent = DateTime.Parse("15/05/2022");
 
-                PlayListEvent gezelligeAvond = new PlayListEvent(comedyEvent1.naam, "werft", "Geel",DateTime.Parse("15/05/2022"),"maria","+32 2 1234567", (bool)comedyEvent1.cafeSetting);
+                PlayListEvent gezelligeAvond = new PlayListEvent(naamEventje, eventLocatietje, eventGemeente, tijdstipEvent, naamVerantwoordelijke, telefoonVerantwoordelijke, (bool)comedyEvent1.cafeSetting);
                 playlist.Add(gezelligeAvond);
             }
 

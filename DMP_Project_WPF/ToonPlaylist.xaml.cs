@@ -36,7 +36,7 @@ namespace DMP_Project_WPF
             sql += " INNER JOIN Comedy.Comedian AS CO ON  EventComedian.comedianId = CO.id";
             sql += " INNER JOIN Comedy.DatumUur AS DA ON EV.id = DA.eventId";
             sql += " WHERE  CO.naam = @naam3 ";
-            // sql += " ORDER BY DA.datumTijdstip";
+            sql += " ORDER BY DA.datumTijdstip";
 
             lijstplaylistevents = DatabaseOperations.MaakPlaylist2(sql,naam3);         // je kan niet zomaar type1 op type2 mappen
 
