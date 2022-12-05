@@ -191,9 +191,14 @@ namespace DMP_Project_DAL
 
 
             DateTime dendatum = DateTime.Parse("15/12/2022 20:15");
-            Event2 gezelligeAvond = new Event2("lachen", dendatum, "werft", "Geel", true, 16);
-            zoeklijst.Add(gezelligeAvond);
-            
+            foreach (var comedyPlaats in result3)
+            {
+                Event2 gezelligeAvond = new Event2("lachen", dendatum, comedyPlaats.naam , comedyPlaats.gemeente , true, 16);
+                zoeklijst.Add(gezelligeAvond);
+            }
+
+
+
 
             return zoeklijst;
         }

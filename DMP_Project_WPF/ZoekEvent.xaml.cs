@@ -42,7 +42,7 @@ namespace DMP_Project_WPF
             bool rolstoel1 = (bool)tgRolstoel.IsChecked;
             bool cafesetting1 = (bool)tgCafesetting.IsChecked;
 
-            string sql = "SELECT LO.id, LO.naam, EVLO.id, EV.id, EVCO.id, CO.id , EV.naam, EV.cafeSetting, LO.provincie ";
+            string sql = "SELECT LO.id, LO.naam, LO.gemeente, EVLO.id, EV.id, EVCO.id, CO.id , EV.naam, EV.cafeSetting, LO.provincie, LO.adres ";
             sql += " FROM Comedy.Locatie AS LO";
             sql += " INNER JOIN Comedy.EventLocatie AS EVLO ON LO.id = EVLO.locatieId";
             sql += " INNER JOIN Comedy.Event AS EV ON  EVLO.eventId = EV.id";
@@ -67,7 +67,7 @@ namespace DMP_Project_WPF
             }
             if (!(provincie1 is null))
             {
-                sql += " AND  LO.provincie = "  + provincie1 + " ";
+                sql += " AND  LO.provincie = @provincie " ;
             }
             if (!(comedian1 is null))
             {
