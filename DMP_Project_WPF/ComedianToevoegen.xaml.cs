@@ -51,8 +51,58 @@ namespace DMP_Project_WPF
 
         }
 
+        private string Valideer()
+        {
+            string fout = "";
+
+            
+            if (string.IsNullOrEmpty(txtVoornaam.Text))
+            {
+                fout += "Voornaam is verplicht" + Environment.NewLine;
+            }
+            if (string.IsNullOrEmpty(txtNaam.Text))
+            {
+                fout += "Naam is verplicht" + Environment.NewLine;
+            }
+
+            return fout;
+
+        }
+
+
+
+
         private void BTNMaakComedianAan_Click(object sender, RoutedEventArgs e)
         {
+            // hier moet voornaam en achternaam ingegeven worden, bij voorkeur ook geboortedatum
+            
+
+            string fout = "";
+            // string fout = Valideer();
+            if (string.IsNullOrEmpty(fout))
+            {
+                Comedian comedian8 = new Comedian();
+                comedian8.voornaam = txtVoornaam.Text;
+                comedian8.naam = txtNaam.Text;
+                comedian8.geboortedatum = calGeboortedatum.SelectedDate.Value;
+                
+
+                if (DatabaseOperations.ComedianToevoegen(comedian8))
+                {
+                    MessageBox.Show("Comedian werd toegevoegd");
+                    Close();
+                }
+                else
+                {
+                    MessageBox.Show("De comedian is nog geen lid van het clubje, nogmaals ... ");
+                }
+            }
+            else
+            {
+                MessageBox.Show(fout);
+            }
+
+
 
         }
 

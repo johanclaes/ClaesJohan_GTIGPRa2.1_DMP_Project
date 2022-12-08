@@ -2,9 +2,12 @@
 using DMP_Project_Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace DMP_Project_DAL
 {
@@ -102,13 +105,9 @@ namespace DMP_Project_DAL
                     eventlocatie2 = EventLocatie;
                     eventlocatie2.Locatie = locatie3;
 
-                    // DatumUur datumuur5;
-                    // datumuur5 = DatumUur;
-
                     Event event1;
                     event1 = Event;
                     event1.EventLocaties.Add(item: eventlocatie2);
-                    // event1.DatumUurs.Add(datumuur5);
                     
                     return event1;
                 }
@@ -177,11 +176,16 @@ namespace DMP_Project_DAL
             var result3 = _db.Connectie.Query<Locatie, EventLocatie, Event, EventComedian, Comedian, Locatie>(sqlQuery, 
                 (Locatie, EventLocatie, Event, EventComedian, Comedian) =>
             {
-                
+                Event event5;
+                event5 = Event;
+
+                EventLocatie eventlocatie2;
+                eventlocatie2 = EventLocatie;
+                eventlocatie2.Event = event5;
+
                 Locatie locatie1;
                 locatie1 = Locatie;
-
-                
+                locatie1.EventLocaties.Add(item: eventlocatie2);
 
                 return locatie1;
             }
@@ -193,7 +197,10 @@ namespace DMP_Project_DAL
             DateTime dendatum = DateTime.Parse("15/12/2022 20:15");
             foreach (var comedyPlaats in result3)
             {
-                Event2 gezelligeAvond = new Event2("lachen", dendatum, comedyPlaats.naam , comedyPlaats.gemeente , true, 16);
+
+                float prijs7 = (float)comedyPlaats.EventLocaties.First().Event.prijs;
+                string eventNaam8 = comedyPlaats.EventLocaties.First().Event.naam;
+                Event2 gezelligeAvond = new Event2(eventNaam8, dendatum, comedyPlaats.naam , comedyPlaats.gemeente , true, prijs7);
                 zoeklijst.Add(gezelligeAvond);
             }
 
@@ -210,6 +217,33 @@ namespace DMP_Project_DAL
             _db.Close();
 
             return result1;
+        }
+
+
+        public static bool ComedianToevoegen(Comedian comedian2)
+        {
+            string sql = @"INSERT INTO Comedian (naam, voornaam, geboortedatum)
+                           VALUES (@comediannaam, @comedianvoornaam, @comediangeboortedatum)";
+
+            var parameters = new
+            {
+                @comediannaam = comedian2.naam,
+                @comedianvoornaam = comedian2.voornaam,
+                @comediangeboortedatum = comedian2.geboortedatum,
+                
+            };
+
+            using (IDbConnection db = new SqlConnection(connectionString))
+            {
+                var affectedRows = db.Execute(sql, parameters);
+                if (affectedRows == 1)
+                {
+                    return true;
+                }
+            }
+
+
+            return false;
         }
 
 
