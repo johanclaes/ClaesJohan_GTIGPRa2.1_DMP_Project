@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DMP_Project_DAL
 {
-    public static class DatabaseOperations
+    public static class DatabaseOperations 
     {
         private static DatabaseConnectie _db;
 
@@ -220,31 +220,7 @@ namespace DMP_Project_DAL
         }
 
 
-        public static bool ComedianToevoegen(Comedian comedian2)
-        {
-            string sql = @"INSERT INTO Comedian (naam, voornaam, geboortedatum)
-                           VALUES (@comediannaam, @comedianvoornaam, @comediangeboortedatum)";
-
-            var parameters = new
-            {
-                @comediannaam = comedian2.naam,
-                @comedianvoornaam = comedian2.voornaam,
-                @comediangeboortedatum = comedian2.geboortedatum,
-                
-            };
-
-            using (IDbConnection db = new SqlConnection(connectionString))
-            {
-                var affectedRows = db.Execute(sql, parameters);
-                if (affectedRows == 1)
-                {
-                    return true;
-                }
-            }
-
-
-            return false;
-        }
+        
 
 
 

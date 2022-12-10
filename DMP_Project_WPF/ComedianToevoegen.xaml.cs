@@ -1,4 +1,5 @@
 ﻿using DMP_Project_DAL;
+using DMP_Project_Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,20 +82,22 @@ namespace DMP_Project_WPF
             // string fout = Valideer();
             if (string.IsNullOrEmpty(fout))
             {
-                Comedian comedian8 = new Comedian();
-                comedian8.voornaam = txtVoornaam.Text;
-                comedian8.naam = txtNaam.Text;
-                comedian8.geboortedatum = calGeboortedatum.SelectedDate.Value;
-                
+                Comedian2 comedian8 = new Comedian2(txtNaam.Text, txtVoornaam.Text, calGeboortedatum.SelectedDate.Value);
+                // comedian8.voornaam = txtVoornaam.Text;
+                // comedian8.naam = txtNaam.Text;
+                // comedian8.geboortedatum = calGeboortedatum.SelectedDate.Value;
 
-                if (DatabaseOperations.ComedianToevoegen(comedian8))
+                                
+
+                if (!DatabaseOperationsWrite.ComedianToevoegen(comedian8))
                 {
-                    MessageBox.Show("Comedian werd toegevoegd");
+                    MessageBox.Show("De comedian is nog geen lid van het clubje, nogmaals ... ");
                     Close();
                 }
                 else
                 {
-                    MessageBox.Show("De comedian is nog geen lid van het clubje, nogmaals ... ");
+                    MessageBox.Show("Comedian werd toegevoegd");
+                    Close();
                 }
             }
             else
