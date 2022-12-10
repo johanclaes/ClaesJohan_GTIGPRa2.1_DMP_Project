@@ -14,7 +14,7 @@ namespace DMP_Project_DAL
 
         public BaseRepository()
         {
-            ConnectionString = DatabaseConnection.Connectionstring("Comedy");
+            ConnectionString = DatabaseConnection.Connectionstring("ComedyDB");
         }
     }
 }

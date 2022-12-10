@@ -11,7 +11,9 @@ namespace DMP_Project_DAL
     {
         internal static string Connectionstring(string name)
         {
-            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+            string abc = ConfigurationManager.ConnectionStrings[name].ConnectionString;
+            // return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+            return abc;
         }
 
     }

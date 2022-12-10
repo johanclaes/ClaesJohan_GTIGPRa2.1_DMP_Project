@@ -21,10 +21,10 @@ namespace DMP_Project_DAL
             _db.Open();
         }
 
-        public static bool ComedianToevoegen(Comedian2 comedian2)
+        public  bool ComedianToevoegen(Comedian2 comedian2)
         {
 
-            string sql = @"INSERT INTO Comedian (naam, voornaam, geboortedatum)
+            string sql = @"INSERT INTO Comedy.Comedian (naam, voornaam, geboortedatum)
                            VALUES (@comediannaam, @comedianvoornaam, @comediangeboortedatum)";
 
             var parameters = new

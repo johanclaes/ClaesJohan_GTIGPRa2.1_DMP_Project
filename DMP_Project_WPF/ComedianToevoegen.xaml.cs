@@ -83,20 +83,17 @@ namespace DMP_Project_WPF
             if (string.IsNullOrEmpty(fout))
             {
                 Comedian2 comedian8 = new Comedian2(txtNaam.Text, txtVoornaam.Text, calGeboortedatum.SelectedDate.Value);
-                // comedian8.voornaam = txtVoornaam.Text;
-                // comedian8.naam = txtNaam.Text;
-                // comedian8.geboortedatum = calGeboortedatum.SelectedDate.Value;
 
-                                
+                DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
 
-                if (!DatabaseOperationsWrite.ComedianToevoegen(comedian8))
+                if (xyz.ComedianToevoegen(comedian8))
                 {
-                    MessageBox.Show("De comedian is nog geen lid van het clubje, nogmaals ... ");
+                    MessageBox.Show("Comedian werd toegevoegd");
                     Close();
                 }
                 else
                 {
-                    MessageBox.Show("Comedian werd toegevoegd");
+                    MessageBox.Show("De comedian is nog geen lid van het clubje, nogmaals ... ");
                     Close();
                 }
             }
