@@ -35,7 +35,7 @@ namespace DMP_Project_DAL
 
             };
 
-            using (IDbConnection db = new SqlConnection(ConnectionString))                  //   TO SOLVE !
+            using (IDbConnection db = new SqlConnection(ConnectionString))                  //   ***
             {
                 var affectedRows = db.Execute(sql, parameters);
                 if (affectedRows == 1)
@@ -44,10 +44,49 @@ namespace DMP_Project_DAL
                 }
             }
 
-
             return false;
         }
 
-        
+        public bool ComedianBuroInvullen(string comedianNaam,int buroNr)
+        {
+            string sql = @"UPDATE Comedy.Comedian 
+                                SET boekingsburoid = @comedianburoid 
+                                WHERE naam = @comediannaam  ";
+            var parameters = new
+            {
+                @comediannaam = comedianNaam,
+                @comedianburoid = buroNr,
+            };
+            using (IDbConnection db = new SqlConnection(ConnectionString))                  //   ***
+            {
+                var affectedRows = db.Execute(sql, parameters);
+                if (affectedRows == 1)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ComedianBuroVerwijderen(string comedianNaam)
+        {
+            string sql = @"UPDATE Comedy.Comedian 
+                                SET boekingsburoid = NULL 
+                                WHERE naam = @comediannaam  ";
+            var parameters = new
+            {
+                @comediannaam = comedianNaam,
+            };
+            using (IDbConnection db = new SqlConnection(ConnectionString))                  //   ***
+            {
+                var affectedRows = db.Execute(sql, parameters);
+                if (affectedRows == 1)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
 }

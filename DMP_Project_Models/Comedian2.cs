@@ -19,8 +19,15 @@ namespace DMP_Project_Models
             this.geboortedatum = geboortedatum;
         }
 
-        public Comedian2()
+        public Comedian2(string naam, string voornaam)
         {
+            this.naam = naam;
+            this.voornaam = voornaam;
+        }
+
+        public override string ToString()
+        {
+            return voornaam + " " + naam;
         }
     }
 }

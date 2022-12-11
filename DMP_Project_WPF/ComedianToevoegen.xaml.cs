@@ -24,32 +24,92 @@ namespace DMP_Project_WPF
         public ComedianToevoegen(int boekingsburoid)
         {
             InitializeComponent();
-            // MessageBox.Show(boekingsburoid.ToString());
-            List<Comedian> lijstcomedians2 = new List<Comedian>();
-            string sql = "SELECT * FROM Comedy.Comedian";
-            sql += " WHERE boekingsburoid = @id2 ";
-            sql += " ORDER BY naam";
-
-            lijstcomedians2 = DatabaseOperations.OphalenComediansVan1Buro(sql,boekingsburoid);
-            foreach (Comedian comedian1 in lijstcomedians2)
-            {
-                stringlijstcomedians2.Add(comedian1.voornaam + " " + comedian1.naam);
-            }
-            lbComedians.ItemsSource = stringlijstcomedians2;
+            VulListboxVanDitBuro(boekingsburoid);
+            boekingsburoid1 = boekingsburoid;
+            
         }
 
         List<Comedian> lijstcomedians = new List<Comedian>();
         List<string> stringlijstcomedians = new List<string>();
         List<string> stringlijstcomedians2 = new List<string>();
+        int boekingsburoid1;
+        Comedian2 selectedComedian;
+        string selectedComedianNaam; 
+
+        private void VulListboxVanDitBuro(int boekingsburoid2)
+        {
+            // comedians van hun boekingsbureau, zie je in de listbox
+            List<Comedian2> lijstcomedians2 = new List<Comedian2>();
+            string sql = "SELECT * FROM Comedy.Comedian";
+            sql += " WHERE boekingsburoid = @id2 ";                             // het boekingsburoid komt mee met het formulier
+            sql += " ORDER BY naam";
+
+            lijstcomedians = DatabaseOperations.OphalenComediansVan1Buro(sql, boekingsburoid2);
+            //  de klasse comedian bevat geen ToString, dus lijstComedian copiëren naar lijstComedian2
+            foreach (Comedian comedian1 in lijstcomedians)
+            {
+                Comedian2 comedian2 = new Comedian2(comedian1.naam,comedian1.voornaam);
+                lijstcomedians2.Add(comedian2);
+                
+            }
+            // lbComedians.ItemsSource = stringlijstcomedians2;
+            lbComedians.ItemsSource = lijstcomedians2;
+
+        }
+
+        private void VulComboboxComedianZonderBuro()
+        {
+            // enkel comedians die geen boekingsburo hebben, kan je toevoegen en komen in de combobox
+            List<Comedian2> lijstcomedians2 = new List<Comedian2>();
+            string sql = "SELECT * FROM Comedy.Comedian";
+            sql += " WHERE boekingsburoid IS NULL ";                            // als boekingsburoid = NULL dan is comedian zonder buro
+            sql += " ORDER BY naam";
+
+            lijstcomedians = DatabaseOperations.OphalenComediansOpNaamGesorteerd(sql);
+            foreach (Comedian comedian1 in lijstcomedians)
+            {
+                Comedian2 comedian2 = new Comedian2(comedian1.naam, comedian1.voornaam);
+                lijstcomedians2.Add(comedian2);
+            }
+            cmbComedians.ItemsSource = lijstcomedians2;
+
+        }
 
         private void BTNVoegToe_Click(object sender, RoutedEventArgs e)
         {
+            // uit de combobox van comedians zonder buro, kan er ene toegevoegd worden aan het eigen buro
+            selectedComedian = (Comedian2)cmbComedians.SelectedItem;
+            selectedComedianNaam = selectedComedian.naam;
+            DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
+            if (xyz.ComedianBuroInvullen(selectedComedianNaam, boekingsburoid1) )
+            {
+                MessageBox.Show("Comedian is nu lid van ons buro.");
+            }
+            else
+            {
+                MessageBox.Show("Er is niks aangepast.");
+            }
 
+            VulListboxVanDitBuro(boekingsburoid1);
+            VulComboboxComedianZonderBuro();
         }
 
         private void BTNVerwijder_Click(object sender, RoutedEventArgs e)
         {
-
+            // als een comedian niet meer wil verdergaan met ons buro, aanvinken in listbox en verwijder clicken
+            selectedComedian = (Comedian2)lbComedians.SelectedItem;
+            selectedComedianNaam = selectedComedian.naam;
+            DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
+            if (xyz.ComedianBuroVerwijderen(selectedComedianNaam))
+            {
+                MessageBox.Show("een extra comedian zonder buro.");
+            }
+            else
+            {
+                MessageBox.Show("Er is niks aangepast.");
+            }
+            VulListboxVanDitBuro(boekingsburoid1);
+            VulComboboxComedianZonderBuro();
         }
 
         private string Valideer()
@@ -89,12 +149,11 @@ namespace DMP_Project_WPF
                 if (xyz.ComedianToevoegen(comedian8))
                 {
                     MessageBox.Show("Comedian werd toegevoegd");
-                    Close();
+                    VulComboboxComedianZonderBuro();
                 }
                 else
                 {
                     MessageBox.Show("De comedian is nog geen lid van het clubje, nogmaals ... ");
-                    Close();
                 }
             }
             else
@@ -102,29 +161,12 @@ namespace DMP_Project_WPF
                 MessageBox.Show(fout);
             }
 
-
-
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // enkel comedians die geen boekingsburo hebben, kan je toevoegen en komen in de combobox
-            List<Comedian> lijstcomedians = new List<Comedian>();
-            string sql = "SELECT * FROM Comedy.Comedian";
-            sql += " WHERE boekingsburoid IS NULL ";                 
-            sql += " ORDER BY naam";
+            VulComboboxComedianZonderBuro();
 
-            lijstcomedians = DatabaseOperations.OphalenComediansOpNaamGesorteerd(sql);
-            foreach (Comedian comedian1 in lijstcomedians)
-            {
-                stringlijstcomedians.Add(comedian1.voornaam + " " + comedian1.naam);
-            }
-            cmbComedians.ItemsSource = stringlijstcomedians;
-
-            // comedians van hun boekingsbureau, zie je in de listbox
-
-
-            // lbComedians.ItemsSource = stringlijstcomedians;
         }
     }
 }
