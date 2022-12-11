@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DMP_Project_DAL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,24 +20,30 @@ namespace DMP_Project_WPF
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (txtUsername.Text == "username")
-            {
-                if (txtPassword.Text == "password")
-                {
-                    this.Close();
-                    EventToevoegen EventToevoegenWindow = new EventToevoegen();
-                    EventToevoegenWindow.ShowDialog();
+            string sql = "SELECT id,loginName,loginPassword,locatieId FROM Comedy.LocatieContact";
+            sql += " WHERE loginName = @loginName ";              // je kan dit niet meegeven in string format
+            
 
-                }
-                else
-                {
-                    MessageBox.Show("Wrong password");
-                }
+            string username1 = txtUsername.Text;
+            string password1 = txtPassword.Text;
+
+
+            int locatieNr = DatabaseOperations.OpzoekenLocatieOpBasisUsernamePassword(sql, username1, password1);
+
+            if (locatieNr == -1)
+            {
+                MessageBox.Show("Onbekende username-password");
             }
             else
             {
-                MessageBox.Show("Onbekende username!");
+                this.Close();
+                
+
+                EventToevoegen EventToevoegenWindow = new EventToevoegen(locatieNr);
+                EventToevoegenWindow.ShowDialog();
             }
+
+            
         }
     }
 }

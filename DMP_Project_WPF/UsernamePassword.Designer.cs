@@ -41,7 +41,7 @@ namespace DMP_Project_WPF
             this.txtUsername.Size = new System.Drawing.Size(142, 22);
             this.txtUsername.TabIndex = 0;
             this.txtUsername.Tag = "txtUsername";
-            this.txtUsername.Text = "username";
+            this.txtUsername.Text = "gertd";
             // 
             // txtPassword
             // 
@@ -50,7 +50,7 @@ namespace DMP_Project_WPF
             this.txtPassword.Size = new System.Drawing.Size(142, 22);
             this.txtPassword.TabIndex = 1;
             this.txtPassword.Tag = "txtPassword";
-            this.txtPassword.Text = "password";
+            this.txtPassword.Text = "25a%";
             // 
             // button1
             // 

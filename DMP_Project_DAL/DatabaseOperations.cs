@@ -48,6 +48,25 @@ namespace DMP_Project_DAL
             return result;
         }
 
+        public static int OpzoekenLocatieOpBasisUsernamePassword(string sqlQuery, string username, string password)
+        {
+            // we geven de FK terug die verwijst naar locatie
+            
+            Start();
+            var result = _db.Connectie.Query<LocatieContact>(sqlQuery, param: new { loginName = username  }).ToList();
+            _db.Close();
+
+            int locatieIdNr = -1;
+            if (result.Count > 0)
+            {
+                locatieIdNr = result.First().locatieId;
+            }
+            
+            
+
+            return locatieIdNr;
+        }
+
         public static List<PlayListEvent> MaakPlaylist(string sqlQuery)
         {
 
@@ -197,8 +216,15 @@ namespace DMP_Project_DAL
             DateTime dendatum = DateTime.Parse("15/12/2022 20:15");
             foreach (var comedyPlaats in result3)
             {
-
-                float prijs7 = (float)comedyPlaats.EventLocaties.First().Event.prijs;
+                float prijs7;
+                if (comedyPlaats.EventLocaties.First().Event.prijs == null)
+                {
+                    prijs7 = -1;
+                }
+                else
+                {
+                    prijs7 = (float)comedyPlaats.EventLocaties.First().Event.prijs;
+                }
                 string eventNaam8 = comedyPlaats.EventLocaties.First().Event.naam;
                 Event2 gezelligeAvond = new Event2(eventNaam8, dendatum, comedyPlaats.naam , comedyPlaats.gemeente , true, prijs7);
                 zoeklijst.Add(gezelligeAvond);
@@ -219,8 +245,18 @@ namespace DMP_Project_DAL
             return result1;
         }
 
+        public static List<Event> MaakEventLijstOpbasisLocatieNr(string sqlQuery,int locatieNummer)
+        {
 
-        
+            Start();
+            var result = _db.Connectie.Query<Event>(sqlQuery, param: new { locatieNr = locatieNummer }).ToList();
+            _db.Close();
+
+
+            return result;
+        }
+
+
 
 
 

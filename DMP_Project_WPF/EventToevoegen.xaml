@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DMP_Project_WPF"
         mc:Ignorable="d"
-        Title="EventToevoegen" Height="450" Width="800" Background="#FF9292EA">
+        Title="EventToevoegen" Height="450" Width="800" Background="#FF9292EA" Loaded="Window_Loaded">
     <Grid>
         <TextBlock Text="Event Toevoegen" Margin="64,20,425.6,356" FontSize="18"/>
-        <ListBox x:Name="lstMyEvents" HorizontalAlignment="Left" Height="100" Margin="413,224,0,0" VerticalAlignment="Top" Width="351"/>
+        
         <Button x:Name="btnVoegEventToe" Content="Voeg Event toe" HorizontalAlignment="Left" Margin="566,64,0,0" VerticalAlignment="Top" Width="114" Click="VoegEventToe_Click"/>
         <Button x:Name="btnUpdateEvent" Content="Update Event" HorizontalAlignment="Left" Margin="566,94,0,0" VerticalAlignment="Top" Width="114" Click="BTNUpdateEvent_Click"/>
         <DatePicker x:Name="calDatum" HorizontalAlignment="Left" Margin="30,302,0,0" VerticalAlignment="Top" Height="22"/>
@@ -21,9 +21,11 @@
         <TextBox x:Name="txtWebsite" HorizontalAlignment="Left" Height="23" Margin="30,234,0,0" TextWrapping="Wrap" Text="www.website.be" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="txtLeeftijd" HorizontalAlignment="Left" Height="23" Margin="32,268,0,0" TextWrapping="Wrap" Text="minimum leeftijd" VerticalAlignment="Top" Width="120"/>
         <ComboBox x:Name="cmbComedians" HorizontalAlignment="Left" Margin="396,133,0,0" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="txtTijdstip" HorizontalAlignment="Left" Height="23" Margin="163,301,0,0" TextWrapping="Wrap" Text="18u30" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="txtTijdstip" HorizontalAlignment="Left" Height="23" Margin="32,329,0,0" TextWrapping="Wrap" Text="18u30" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="btnComedianToevoegen" Content="Comedian Toevoegen" HorizontalAlignment="Left" Margin="570,135,0,0" VerticalAlignment="Top" Width="133" Click="BTNComedianToevoegen_Click"/>
 
-    
+        <DataGrid x:Name="datagridEvents" AutoGenerateColumns="true" Margin="228,198,30.6,39" Grid.Column="0" SelectionChanged="DatagridEvents_selectionChanged"/>
+        
+
     </Grid>
 </Window>
