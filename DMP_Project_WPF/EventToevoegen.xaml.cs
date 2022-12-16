@@ -30,6 +30,7 @@ namespace DMP_Project_WPF
         List<Comedian> lijstcomedians = new List<Comedian>();
         List<Event> lijstevents = new List<Event>();
         List<string> stringlijstcomedians = new List<string>();
+        List<Comedian> lijsteventComedians = new List<Comedian>();
 
         private void VoegEventToe_Click(object sender, RoutedEventArgs e)
         {
@@ -86,12 +87,32 @@ namespace DMP_Project_WPF
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             VulComboboxComedians();
-            // VulListboxEventsUwLocatie(locatieNr);
+            
         }
 
         private void DatagridEvents_selectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MessageBox.Show("hello");
+            // als je een event selecteert, dan toont een messagebox de comedians die komen optreden
+
+            int eventid = 1;
+
+            // eventid = Event2(datagridEvents.SelectedItem).;
+
+            string sql = "SELECT CO.id, CO.naam, CO.voornaam  ";
+            sql += " FROM Comedy.Comedian AS CO";
+            sql += " INNER JOIN Comedy.EventComedian AS EVCO ON CO.id = EVCO.comedianId";
+            sql += " INNER JOIN Comedy.Event AS EV ON  EVCO.eventId = EV.id";
+            sql += " WHERE  EV.id = @eventid ";
+
+            string comediansDitEvent = null;
+
+            lijsteventComedians = DatabaseOperations.OphalenComediansVan1Event(sql, eventid);
+            foreach (var item in lijsteventComedians)
+            {
+                string voornaamAchternaam = item.voornaam + " " + item.naam + System.Environment.NewLine;
+                comediansDitEvent += voornaamAchternaam;
+            }
+            MessageBox.Show(comediansDitEvent);
         }
     }
 }

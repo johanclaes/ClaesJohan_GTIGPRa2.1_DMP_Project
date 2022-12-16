@@ -256,7 +256,16 @@ namespace DMP_Project_DAL
             return result;
         }
 
+        public static List<Comedian> OphalenComediansVan1Event(string sqlQuery, int eventid)
+        {
 
+            Start();
+            var result2 = _db.Connectie.Query<Comedian>(sqlQuery, param: new { eventid = eventid }).ToList();
+            _db.Close();
+
+
+            return result2;
+        }
 
 
 

@@ -88,5 +88,27 @@ namespace DMP_Project_DAL
             return false;
         }
 
+        public bool ComedianStoptErmee(string comedianNaam)
+        {
+            string sql = @"DELETE FROM Comedy.Comedian
+                           WHERE naam = @comediannaam";
+
+            var parameters = new
+            {
+                @comediannaam = comedianNaam
+            };
+
+            using (IDbConnection db = new SqlConnection(ConnectionString))
+            {
+                var affectedRows = db.Execute(sql, parameters);
+                if (affectedRows >= 1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
     }
 }

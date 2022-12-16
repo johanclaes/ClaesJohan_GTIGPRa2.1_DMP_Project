@@ -23,7 +23,7 @@
         </GroupBox>
         <TextBlock HorizontalAlignment="Left" Margin="425,240,0,0" TextWrapping="Wrap" Text="Comedians onder contract" VerticalAlignment="Top" FontSize="18" RenderTransformOrigin="0.531,1.845"/>
         <TextBlock HorizontalAlignment="Left" Margin="535,138,0,0" TextWrapping="Wrap" Text="Comedians zonder buro" VerticalAlignment="Top" FontSize="18" RenderTransformOrigin="0.531,1.845"/>
-        <Button x:Name="btnComedian_Stopt" Content="Comedian Stopt" HorizontalAlignment="Left" Margin="572,114,0,0" VerticalAlignment="Top" Width="142" Click="btnComedian_Stopt_Click"/>
+        <Button x:Name="btnComedian_Stopt" Content="Comedian Stopt" HorizontalAlignment="Left" Margin="572,114,0,0" VerticalAlignment="Top" Width="142" Click="BTNComedian_Stopt_Click"/>
 
     </Grid>
 </Window>

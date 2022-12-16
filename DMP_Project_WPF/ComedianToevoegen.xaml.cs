@@ -79,37 +79,53 @@ namespace DMP_Project_WPF
         {
             // uit de combobox van comedians zonder buro, kan er ene toegevoegd worden aan het eigen buro
             selectedComedian = (Comedian2)cmbComedians.SelectedItem;
-            selectedComedianNaam = selectedComedian.naam;
-            DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
-            if (xyz.ComedianBuroInvullen(selectedComedianNaam, boekingsburoid1) )
+            if (selectedComedian is null)
             {
-                MessageBox.Show("Comedian is nu lid van ons buro.");
+                MessageBox.Show("Selecteer een Comedian in de Combobox.");
             }
             else
             {
-                MessageBox.Show("Er is niks aangepast.");
-            }
+                selectedComedianNaam = selectedComedian.naam;
+                DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
+                if (xyz.ComedianBuroInvullen(selectedComedianNaam, boekingsburoid1))
+                {
+                    MessageBox.Show("Comedian is nu lid van ons buro.");
+                }
+                else
+                {
+                    MessageBox.Show("Er is niks aangepast.");
+                }
 
-            VulListboxVanDitBuro(boekingsburoid1);
-            VulComboboxComedianZonderBuro();
+                VulListboxVanDitBuro(boekingsburoid1);
+                VulComboboxComedianZonderBuro();
+            }
+            
         }
 
         private void BTNVerwijder_Click(object sender, RoutedEventArgs e)
         {
             // als een comedian niet meer wil verdergaan met ons buro, aanvinken in listbox en verwijder clicken
             selectedComedian = (Comedian2)lbComedians.SelectedItem;
-            selectedComedianNaam = selectedComedian.naam;
-            DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
-            if (xyz.ComedianBuroVerwijderen(selectedComedianNaam))
+            if (selectedComedian is null)
             {
-                MessageBox.Show("een extra comedian zonder buro.");
+                MessageBox.Show("Selecteer een Comedian in de listbox.");
             }
             else
             {
-                MessageBox.Show("Er is niks aangepast.");
+                selectedComedianNaam = selectedComedian.naam;
+                DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
+                if (xyz.ComedianBuroVerwijderen(selectedComedianNaam))
+                {
+                    MessageBox.Show("een extra comedian zonder buro.");
+                }
+                else
+                {
+                    MessageBox.Show("Er is niks aangepast.");
+                }
+                VulListboxVanDitBuro(boekingsburoid1);
+                VulComboboxComedianZonderBuro();
             }
-            VulListboxVanDitBuro(boekingsburoid1);
-            VulComboboxComedianZonderBuro();
+            
         }
 
         private string Valideer()
@@ -169,9 +185,29 @@ namespace DMP_Project_WPF
 
         }
 
-        private void btnComedian_Stopt_Click(object sender, RoutedEventArgs e)
+        private void BTNComedian_Stopt_Click(object sender, RoutedEventArgs e)
         {
-
+            selectedComedian = (Comedian2)cmbComedians.SelectedItem;
+            if (selectedComedian is null)
+            {
+                MessageBox.Show("Selecteer een Comedian in de combobox.");
+            }
+            else
+            {
+                selectedComedianNaam = selectedComedian.naam;
+                DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
+                if (xyz.ComedianStoptErmee(selectedComedianNaam))
+                {
+                    MessageBox.Show("Comedian heeft zijn schop afgekuisd.");
+                }
+                else
+                {
+                    MessageBox.Show("Er is niks aangepast.");
+                }
+                VulListboxVanDitBuro(boekingsburoid1);
+                VulComboboxComedianZonderBuro();
+            }
+            
         }
     }
 }
