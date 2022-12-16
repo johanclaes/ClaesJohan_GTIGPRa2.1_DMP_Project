@@ -168,5 +168,10 @@ namespace DMP_Project_WPF
             VulComboboxComedianZonderBuro();
 
         }
+
+        private void btnComedian_Stopt_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
