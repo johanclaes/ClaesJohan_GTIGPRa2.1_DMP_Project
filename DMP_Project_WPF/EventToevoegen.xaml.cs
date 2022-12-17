@@ -94,25 +94,70 @@ namespace DMP_Project_WPF
         {
             // als je een event selecteert, dan toont een messagebox de comedians die komen optreden
 
-            int eventid = 1;
-
-            // eventid = Event2(datagridEvents.SelectedItem).;
-
-            string sql = "SELECT CO.id, CO.naam, CO.voornaam  ";
-            sql += " FROM Comedy.Comedian AS CO";
-            sql += " INNER JOIN Comedy.EventComedian AS EVCO ON CO.id = EVCO.comedianId";
-            sql += " INNER JOIN Comedy.Event AS EV ON  EVCO.eventId = EV.id";
-            sql += " WHERE  EV.id = @eventid ";
-
-            string comediansDitEvent = null;
-
-            lijsteventComedians = DatabaseOperations.OphalenComediansVan1Event(sql, eventid);
-            foreach (var item in lijsteventComedians)
+            Event eventje = (Event)datagridEvents.SelectedItem;
+            if (eventje is null)
             {
-                string voornaamAchternaam = item.voornaam + " " + item.naam + System.Environment.NewLine;
-                comediansDitEvent += voornaamAchternaam;
+                MessageBox.Show("er niet naast clicken..");
             }
-            MessageBox.Show(comediansDitEvent);
+            else
+            {
+                string eventnaam = eventje.naam;
+
+                string sql = "SELECT CO.id, CO.naam, CO.voornaam  ";
+                sql += " FROM Comedy.Comedian AS CO";
+                sql += " INNER JOIN Comedy.EventComedian AS EVCO ON CO.id = EVCO.comedianId";
+                sql += " INNER JOIN Comedy.Event AS EV ON  EVCO.eventId = EV.id";
+                sql += " WHERE  EV.naam = @eventnaam ";
+
+                string comediansDitEvent = null;
+
+                lijsteventComedians = DatabaseOperations.OphalenComediansVan1Event(sql, eventnaam);
+                foreach (var item in lijsteventComedians)
+                {
+                    string voornaamAchternaam = item.voornaam + " " + item.naam + System.Environment.NewLine;
+                    comediansDitEvent += voornaamAchternaam;
+                }
+                MessageBox.Show(comediansDitEvent);
+
+                // eveneens wordt de naam, de website, kaartjes vrij geladen zodat je deze nog kan updaten
+
+                txtEventname.Text = eventje.naam;
+                txtPrijs.Text = eventje.prijs.ToString();
+                txtLeeftijd.Text = eventje.leeftijd;
+                txtWebsite.Text = eventje.website;
+                txtTijdstip.Text = "rst";
+                if ((bool)eventje.cafeSetting)
+                {
+                    rbCafesetting.IsChecked = true;
+                    rbSchouwburg.IsChecked = false;
+                }
+                else
+                {
+                    rbCafesetting.IsChecked = false;
+                    rbSchouwburg.IsChecked = true;
+                }
+                if ((bool)eventje.kaartenVrij )
+                {
+                    cbKaartenVrij.IsChecked = true;
+                }
+                else
+                {
+                    cbKaartenVrij.IsChecked = false;
+                }
+                if ((bool)eventje.rolstoel)
+                {
+                    cbRolstoel.IsChecked = true;
+                }
+                else
+                {
+                    cbRolstoel.IsChecked = false;
+                }
+                
+                calDatum.SelectedDate = DateTime.Parse("12/12/2002");    
+            }
+
+
+            
         }
     }
 }

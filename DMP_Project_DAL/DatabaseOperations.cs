@@ -256,11 +256,11 @@ namespace DMP_Project_DAL
             return result;
         }
 
-        public static List<Comedian> OphalenComediansVan1Event(string sqlQuery, int eventid)
+        public static List<Comedian> OphalenComediansVan1Event(string sqlQuery, string eventnaam)
         {
 
             Start();
-            var result2 = _db.Connectie.Query<Comedian>(sqlQuery, param: new { eventid = eventid }).ToList();
+            var result2 = _db.Connectie.Query<Comedian>(sqlQuery, param: new { eventnaam = eventnaam }).ToList();
             _db.Close();
 
 
