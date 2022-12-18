@@ -248,12 +248,33 @@ namespace DMP_Project_DAL
         public static List<Event> MaakEventLijstOpbasisLocatieNr(string sqlQuery,int locatieNummer)
         {
 
+            //  Start();
+            // var result7 = _db.Connectie.Query<Event>(sqlQuery, param: new { locatieNr = locatieNummer }).ToList();
+            // _db.Close();
+
             Start();
-            var result = _db.Connectie.Query<Event>(sqlQuery, param: new { locatieNr = locatieNummer }).ToList();
+            var result7 = _db.Connectie.Query<Event, DatumUur, Event>(sqlQuery,
+                (Event, DatumUur) =>
+                {
+                    Event event1;
+                    event1 = Event;
+
+                    DatumUur datumuur2;
+                    datumuur2 = DatumUur;
+                    datumuur2.Event = event1;
+                    // eventlocatie2.Event = event5;
+                    event1.DatumUurs.Add(item: datumuur2);
+                    
+                    // locatie1.EventLocaties.Add(item: eventlocatie2);
+
+                    return event1;
+                }
+         , param: new { locatieNr = locatieNummer }
+         , splitOn: "id").Distinct().ToList();
             _db.Close();
 
 
-            return result;
+            return result7;
         }
 
         public static List<Comedian> OphalenComediansVan1Event(string sqlQuery, string eventnaam)
@@ -267,7 +288,16 @@ namespace DMP_Project_DAL
             return result2;
         }
 
+        public static List<DatumUur> GeefDatumVanEvent(string sqlQuery, string eventnaam)
+        {
 
+            Start();
+            var result2 = _db.Connectie.Query<DatumUur>(sqlQuery, param: new { eventnaam = eventnaam }).ToList();
+            _db.Close();
+
+
+            return result2;
+        }
 
 
     }

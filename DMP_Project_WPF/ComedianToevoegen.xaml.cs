@@ -195,7 +195,7 @@ namespace DMP_Project_WPF
             else
             {
                 selectedComedianNaam = selectedComedian.naam;
-                DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
+                DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();        // eerst eventcomedian opkuisen .. dan comedian deleten
                 if (xyz.ComedianStoptErmee(selectedComedianNaam))
                 {
                     MessageBox.Show("Comedian heeft zijn schop afgekuisd.");

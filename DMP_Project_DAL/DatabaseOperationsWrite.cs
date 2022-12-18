@@ -90,18 +90,75 @@ namespace DMP_Project_DAL
 
         public bool ComedianStoptErmee(string comedianNaam)
         {
-            string sql = @"DELETE FROM Comedy.Comedian
+            // 1st id opvragen van die comedian     **************************************************
+
+            string sql1 = "SELECT id FROM Comedy.Comedian";
+            sql1 += " WHERE naam == @comedianNaam ";
+
+            var parameters1 = new
+            {
+                @comediannaam = comedianNaam
+            };
+
+            int comedianid = 55555;
+
+
+
+            // 2de  alle eventcomedian deleten waar comedianid 
+            string sql2 = @"DELETE FROM Comedy.EventComedian
+                           WHERE comedianid = @comedianid";
+
+            var parameters2 = new
+            {
+                @comedianid = comedianid
+            };
+
+            using (IDbConnection db = new SqlConnection(ConnectionString))
+            {
+                var affectedRows = db.Execute(sql2, parameters2);
+            }
+
+
+            // 3de ook comedian zelf delete
+
+            string sql3 = @"DELETE FROM Comedy.Comedian
                            WHERE naam = @comediannaam";
 
-            var parameters = new
+            var parameters3 = new
             {
                 @comediannaam = comedianNaam
             };
 
             using (IDbConnection db = new SqlConnection(ConnectionString))
             {
-                var affectedRows = db.Execute(sql, parameters);
+                var affectedRows = db.Execute(sql3, parameters3);
                 if (affectedRows >= 1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool NewEventToevoegen(Comedian2 comedian2)
+        {
+
+            string sql = @"INSERT INTO Comedy.Comedian (naam, voornaam, geboortedatum)
+                           VALUES (@comediannaam, @comedianvoornaam, @comediangeboortedatum)";
+
+            var parameters = new
+            {
+                @comediannaam = comedian2.naam,
+                @comedianvoornaam = comedian2.voornaam,
+                @comediangeboortedatum = comedian2.geboortedatum,
+
+            };
+
+            using (IDbConnection db = new SqlConnection(ConnectionString))                  //   ***
+            {
+                var affectedRows = db.Execute(sql, parameters);
+                if (affectedRows == 1)
                 {
                     return true;
                 }

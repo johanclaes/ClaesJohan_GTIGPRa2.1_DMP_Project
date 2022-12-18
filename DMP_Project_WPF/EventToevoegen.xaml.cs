@@ -31,13 +31,16 @@ namespace DMP_Project_WPF
         List<Event> lijstevents = new List<Event>();
         List<string> stringlijstcomedians = new List<string>();
         List<Comedian> lijsteventComedians = new List<Comedian>();
+        List<DatumUur> lijstdatums = new List<DatumUur>();
 
         private void VoegEventToe_Click(object sender, RoutedEventArgs e)
         {
+            // er wordt dus eerst een event aangemaakt, en via de knoppen comedian toevoegen en datum toevoegen 
+            // maak je het event compleet
 
         }
 
-        private void BTNUpdateEvent_Click(object sender, RoutedEventArgs e)
+        private void btnDatum_UurToevoegen_Click(object sender, RoutedEventArgs e)
         {
 
         }
@@ -47,6 +50,10 @@ namespace DMP_Project_WPF
 
         }
 
+        private void BTNUpdateEvent_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
 
 
         private void VulComboboxComedians()
@@ -70,10 +77,11 @@ namespace DMP_Project_WPF
         {
             // in de listbox gaan we alle events tonen die verwijzen naar de locatie waar dit locatiecontact voor verantwoordelijk is
 
-            string sql = "SELECT EV.id, EV.naam, EV.cafeSetting, Ev.website, EV.prijs, EV.leeftijd, EV.rolstoel, EV.kaartenVrij  ";
+            string sql = "SELECT EV.id, EV.naam, EV.cafeSetting, Ev.website, EV.prijs, EV.leeftijd, EV.rolstoel, EV.kaartenVrij, DA.id, DA.datumTijdstip   ";
             sql += " FROM Comedy.Event AS EV";
             sql += " INNER JOIN Comedy.EventLocatie AS EVLO ON EV.id = EVLO.eventId";
             sql += " INNER JOIN Comedy.Locatie AS LO ON  EVLO.locatieId = LO.id";
+            sql += " INNER JOIN Comedy.DatumUur AS DA ON EV.id = DA.eventId";
             sql += " WHERE  LO.id = @locatieNr ";
 
             lijstevents = DatabaseOperations.MaakEventLijstOpbasisLocatieNr(sql, locatieNr2);
@@ -125,7 +133,8 @@ namespace DMP_Project_WPF
                 txtPrijs.Text = eventje.prijs.ToString();
                 txtLeeftijd.Text = eventje.leeftijd;
                 txtWebsite.Text = eventje.website;
-                txtTijdstip.Text = "rst";
+                DateTime datumUur1 = eventje.DatumUurs.First().datumTijdstip;
+                
                 if ((bool)eventje.cafeSetting)
                 {
                     rbCafesetting.IsChecked = true;
@@ -152,12 +161,29 @@ namespace DMP_Project_WPF
                 {
                     cbRolstoel.IsChecked = false;
                 }
-                
-                calDatum.SelectedDate = DateTime.Parse("12/12/2002");    
+
+                // de datum en uur zit in een andere tabel
+
+                calDatum.SelectedDate = DateTime.Parse("12/12/2002");
+
+                string sql2 = "SELECT DA.datumTijdstip  ";
+                sql2 += " FROM Comedy.DatumUur AS DA";
+                sql2 += " INNER JOIN Comedy.Event AS EV ON EV.id = DA.eventId";
+                sql2 += " WHERE  EV.naam = @eventnaam ";
+
+                // lijstdatums = DatabaseOperations.GeefDatumVanEvent(sql2, eventnaam);
+                // calDatum.SelectedDate = lijstdatums.First().datumTijdstip;
+                calDatum.SelectedDate = datumUur1;
+
+                // DateTime timeOnly = new DateTime(lijstdatums.First().datumTijdstip.TimeOfDay.Ticks);
+                string Timeonly = datumUur1.ToShortTimeString();
+                txtTijdstip.Text = Timeonly;
             }
 
 
             
         }
+
+        
     }
 }
