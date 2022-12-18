@@ -141,10 +141,71 @@ namespace DMP_Project_DAL
             return false;
         }
 
-        public bool NewEventToevoegen(Comedian2 comedian2)
+        public bool NewEventToevoegen(NewEvent newevent2,int locationNr,DateTime eventdatetime2)
+        {
+            // eerst wordt er een event aangemaakt
+
+            string sql = @"INSERT INTO Comedy.Event (naam, rolstoel, kaartenVrij, cafeSetting, prijs, website, leeftijd)
+                            OUTPUT INSERTED.id
+                           VALUES (@eventnaam, @eventrolstoel, @eventkaartenvrij, @eventcafesetting, @eventprijs, @eventwebsite, @eventleeftijd)";
+
+            var parameters = new
+            {
+                @eventnaam = newevent2.naam,
+                @eventrolstoel = newevent2.rolstoel,
+                @eventkaartenvrij = newevent2.kaartenVrij,
+                @eventcafesetting = newevent2.cafeSetting,
+                @eventprijs = newevent2.prijs,
+                @eventwebsite = newevent2.website,
+                @eventleeftijd = newevent2.leeftijd,
+            };
+
+            using (IDbConnection db = new SqlConnection(ConnectionString))                  //   ***
+            {
+                // int identity;
+                // var affectedRows = db.Execute(sql, parameters);
+                var identity = db.ExecuteScalar<int>(sql, parameters);
+                // return identity;
+                // return identity;
+                // var eventidinserted = db.Execute(sql, parameters).Single();
+
+                // en vervolgens een eventLocatie dat het event met de eigen locatie verbindt
+                string sql2 = @"INSERT INTO Comedy.EventLocatie (eventId, locatieId)
+                           VALUES (@eventid, @locatieid)";
+                var parameters2 = new
+                {
+                    @eventid = identity,
+                    @locatieid = locationNr,
+                };
+
+                var affectedRows = db.Execute(sql2, parameters2);
+
+                // en vervolgens een eventLocatie dat het event met de eigen locatie verbindt
+                string sql3 = @"INSERT INTO Comedy.DatumUur (eventId, datumTijdstip)
+                           VALUES (@eventid, @datumtijdstip)";
+                var parameters3 = new
+                {
+                    @eventid = identity,
+                    @datumtijdstip = eventdatetime2,
+                };
+
+                var affectedRows2 = db.Execute(sql3, parameters3);
+
+                return true;
+
+                
+            }
+
+            return false;
+        }
+
+
+        public bool ComedianToevoegenEvent(Comedian comedian2, Event event2)
         {
 
-            string sql = @"INSERT INTO Comedy.Comedian (naam, voornaam, geboortedatum)
+            //      HIER IS NOG WERK AAN
+
+            string sql = @"INSERT INTO Comedy.EventComedian (naam, voornaam, geboortedatum)
                            VALUES (@comediannaam, @comedianvoornaam, @comediangeboortedatum)";
 
             var parameters = new
@@ -166,6 +227,7 @@ namespace DMP_Project_DAL
 
             return false;
         }
+
 
     }
 }

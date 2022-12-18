@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DMP_Project_Models
 {
-    public class Event2
+    public class Event2                     // deze event wordt gebruikt bij het zoeken naar events
     {
         public string EventNaam { get; set; }
 

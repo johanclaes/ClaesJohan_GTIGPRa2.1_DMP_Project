@@ -24,9 +24,11 @@ namespace DMP_Project_WPF
         public EventToevoegen(int locatieNr)
         {
             InitializeComponent();
-            VulListboxEventsUwLocatie(locatieNr);
+            locatienummer = locatieNr;
+            VulListboxEventsUwLocatie(locatienummer);
         }
 
+        int locatienummer;
         List<Comedian> lijstcomedians = new List<Comedian>();
         List<Event> lijstevents = new List<Event>();
         List<string> stringlijstcomedians = new List<string>();
@@ -38,21 +40,70 @@ namespace DMP_Project_WPF
             // er wordt dus eerst een event aangemaakt, en via de knoppen comedian toevoegen en datum toevoegen 
             // maak je het event compleet
 
+            string eventnaam5 = txtEventname.Text;
+            bool eventrolstoel5 = (bool)cbRolstoel.IsChecked;
+            bool eventkaartenVrij5 = (bool)cbKaartenVrij.IsChecked;
+            bool eventcafesetting5 = (bool)rbCafesetting.IsChecked;
+            float.TryParse(txtPrijs.Text, out float eventprijs5);
+            string eventwebsite5 = txtWebsite.Text;
+            string eventleeftijd5 = txtLeeftijd.Text;
+
+            DateTime eventdatum5 = (DateTime)calDatum.SelectedDate;
+            DateTime.TryParse(txtTijdstip.Text ,out DateTime eventtime5);
+            DateTime eventdatumtijd5 = eventdatum5.Add(eventtime5.TimeOfDay);
+
+            // ER MOET NOG DATAVALIDATIE GEBEUREN !!!
+
+            NewEvent newevent1 = new NewEvent(eventnaam5,eventrolstoel5,eventkaartenVrij5,eventcafesetting5,eventprijs5,eventwebsite5,eventleeftijd5);
+
+            DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
+
+            if (xyz.NewEventToevoegen(newevent1, locatienummer, eventdatumtijd5))
+            {
+                MessageBox.Show("Het Event werd toegevoegd");
+                txtEventname.Text = "vul in";
+                VulListboxEventsUwLocatie(locatienummer);
+            }
+            else
+            {
+                MessageBox.Show("Het event is nog niet toegevoegd, nogmaals ... ");
+            }
         }
 
         private void btnDatum_UurToevoegen_Click(object sender, RoutedEventArgs e)
         {
-
+            // hier wordt er telke male een extra row in datumuur table aangemaakt met foreign key verwijzend naar geselecteerd event
         }
 
         private void BTNComedianToevoegen_Click(object sender, RoutedEventArgs e)
         {
+            // hier wordt telke male een extra eventcomedian toegevoegd 
+            Comedian selectedComedian = (Comedian)cmbComedians.SelectedItem;
+            Event selectedEvent = (Event)datagridEvents.SelectedItem;
+            if (selectedComedian is null || selectedEvent is null )
+            {
+                MessageBox.Show("Eerst comedian selecteren via combobox");
+            }
+            else
+            {
+                DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
 
+                if (xyz.ComedianToevoegenEvent(selectedComedian, selectedEvent))
+                {
+                    MessageBox.Show("De comedian werd toegevoegd");
+                    // txtEventname.Text = "vul in";
+                    VulListboxEventsUwLocatie(locatienummer);
+                }
+                else
+                {
+                    MessageBox.Show("De comedian is nog niet toegevoegd, nogmaals ... ");
+                }
+            }
         }
 
         private void BTNUpdateEvent_Click(object sender, RoutedEventArgs e)
         {
-
+            // als de kaartjes op zijn, of de prijs wordt aangepast, er wordt extra info via website gegeven
         }
 
 
@@ -77,7 +128,8 @@ namespace DMP_Project_WPF
         {
             // in de listbox gaan we alle events tonen die verwijzen naar de locatie waar dit locatiecontact voor verantwoordelijk is
 
-            string sql = "SELECT EV.id, EV.naam, EV.cafeSetting, Ev.website, EV.prijs, EV.leeftijd, EV.rolstoel, EV.kaartenVrij, DA.id, DA.datumTijdstip   ";
+            string sql = "SELECT EV.id, EV.naam, EV.cafeSetting, EV.website, EV.prijs, EV.leeftijd, EV.rolstoel, EV.kaartenVrij, DA.id, DA.datumTijdstip   ";
+            // string sql = "SELECT EV.id, EV.naam, EV.cafeSetting, EV.website, EV.prijs, EV.leeftijd, EV.rolstoel, EV.kaartenVrij   ";
             sql += " FROM Comedy.Event AS EV";
             sql += " INNER JOIN Comedy.EventLocatie AS EVLO ON EV.id = EVLO.eventId";
             sql += " INNER JOIN Comedy.Locatie AS LO ON  EVLO.locatieId = LO.id";
