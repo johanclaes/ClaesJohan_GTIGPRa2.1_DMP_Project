@@ -200,20 +200,18 @@ namespace DMP_Project_DAL
         }
 
 
-        public bool ComedianToevoegenEvent(Comedian comedian2, Event event2)
+        public bool ComedianToevoegenEvent(Event event2, Comedian2 comedian2)
         {
 
-            //      HIER IS NOG WERK AAN
+            //      blable-a
 
-            string sql = @"INSERT INTO Comedy.EventComedian (naam, voornaam, geboortedatum)
-                           VALUES (@comediannaam, @comedianvoornaam, @comediangeboortedatum)";
+            string sql = @"INSERT INTO Comedy.EventComedian (eventId, comedianId)
+                           VALUES (@eventId, @comedianId)";
 
             var parameters = new
             {
-                @comediannaam = comedian2.naam,
-                @comedianvoornaam = comedian2.voornaam,
-                @comediangeboortedatum = comedian2.geboortedatum,
-
+                @eventId = event2.id,
+                @comedianId = comedian2.id,
             };
 
             using (IDbConnection db = new SqlConnection(ConnectionString))                  //   ***
@@ -228,6 +226,59 @@ namespace DMP_Project_DAL
             return false;
         }
 
+        public bool NewVoorstellingToevoegen(Event event2, DateTime datum2)
+        {
+            //      blable-a
 
+            string sql = @"INSERT INTO Comedy.DatumUur (eventId, datumTijdstip)
+                           VALUES (@eventId, @datum)";
+
+            var parameters = new
+            {
+                @eventId = event2.id,
+                @datum = datum2,
+            };
+
+            using (IDbConnection db = new SqlConnection(ConnectionString))                  //   ***
+            {
+                var affectedRows = db.Execute(sql, parameters);
+                if (affectedRows == 1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool EventUpdaten(Event event2, bool nogKaartjes3, float prijs3, string website3)
+        {
+            //      blable-a
+
+            string sql = @"UPDATE Comedy.Event 
+                                SET kaartenVrij = @kaartenVrij, prijs = @prijs, website = @website
+                                WHERE id = @eventid  ";
+
+            var parameters = new
+            {
+                @kaartenVrij = nogKaartjes3,
+                @prijs = prijs3,
+                @website = website3,
+                @eventid = event2.id,
+            };
+
+            using (IDbConnection db = new SqlConnection(ConnectionString))                  //   ***
+            {
+                var affectedRows = db.Execute(sql, parameters);
+                if (affectedRows == 1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
+
+    
 }

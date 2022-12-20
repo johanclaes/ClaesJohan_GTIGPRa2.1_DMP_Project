@@ -73,12 +73,30 @@ namespace DMP_Project_WPF
         private void btnDatum_UurToevoegen_Click(object sender, RoutedEventArgs e)
         {
             // hier wordt er telke male een extra row in datumuur table aangemaakt met foreign key verwijzend naar geselecteerd event
+            DateTime eventdatum5 = (DateTime)calDatum.SelectedDate;
+            DateTime.TryParse(txtTijdstip.Text, out DateTime eventtime5);
+            DateTime eventdatumtijd5 = eventdatum5.Add(eventtime5.TimeOfDay);
+            Event selectedEvent = (Event)datagridEvents.SelectedItem;
+
+            DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
+
+            if (xyz.NewVoorstellingToevoegen(selectedEvent, eventdatumtijd5))
+            {
+                MessageBox.Show("Extra voorstelling werd toegevoegd !");
+                txtEventname.Text = "vul in";
+                txtTijdstip.Text = "13:30";
+                VulListboxEventsUwLocatie(locatienummer);
+            }
+            else
+            {
+                MessageBox.Show("Extra voorstelling is nog niet toegevoegd, nogmaals ... ");
+            }
         }
 
         private void BTNComedianToevoegen_Click(object sender, RoutedEventArgs e)
         {
             // hier wordt telke male een extra eventcomedian toegevoegd 
-            Comedian selectedComedian = (Comedian)cmbComedians.SelectedItem;
+            Comedian2 selectedComedian = (Comedian2)cmbComedians.SelectedItem;
             Event selectedEvent = (Event)datagridEvents.SelectedItem;
             if (selectedComedian is null || selectedEvent is null )
             {
@@ -88,11 +106,12 @@ namespace DMP_Project_WPF
             {
                 DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
 
-                if (xyz.ComedianToevoegenEvent(selectedComedian, selectedEvent))
+                if (xyz.ComedianToevoegenEvent(selectedEvent, selectedComedian ))
                 {
                     MessageBox.Show("De comedian werd toegevoegd");
                     // txtEventname.Text = "vul in";
                     VulListboxEventsUwLocatie(locatienummer);
+                    cmbComedians.SelectedItem = null;
                 }
                 else
                 {
@@ -103,7 +122,35 @@ namespace DMP_Project_WPF
 
         private void BTNUpdateEvent_Click(object sender, RoutedEventArgs e)
         {
-            // als de kaartjes op zijn, of de prijs wordt aangepast, er wordt extra info via website gegeven
+            // als de kaartjes op zijn of de prijs wordt aangepast of er wordt extra info via website gegeven
+            Event selectedEvent = (Event)datagridEvents.SelectedItem;
+            bool nogKaartjes3 = (bool)cbKaartenVrij.IsChecked;
+            float.TryParse(txtPrijs.Text,out float prijs3);
+            string website3 = txtWebsite.Text;
+
+            if ( selectedEvent is null)
+            {
+                MessageBox.Show("Selecteer eerst te updaten event.");
+            }
+            else
+            {
+                DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
+
+                if (xyz.EventUpdaten(selectedEvent, nogKaartjes3, prijs3, website3))
+                {
+                    MessageBox.Show("Eventdata zijn aangepast.");
+                    // txtEventname.Text = "vul in";
+                    VulListboxEventsUwLocatie(locatienummer);
+                    cmbComedians.SelectedItem = null;
+                }
+                else
+                {
+                    MessageBox.Show("Eventdata nog niet aangepast ... ");
+                }
+            }
+
+
+
         }
 
 
@@ -118,7 +165,7 @@ namespace DMP_Project_WPF
             //  de klasse comedian bevat geen ToString, dus lijstComedian copiëren naar lijstComedian2
             foreach (Comedian comedian1 in lijstcomedians)
             {
-                Comedian2 comedian2 = new Comedian2(comedian1.naam, comedian1.voornaam);
+                Comedian2 comedian2 = new Comedian2(comedian1.id, comedian1.naam, comedian1.voornaam);
                 lijstcomedians2.Add(comedian2);
             }
         cmbComedians.ItemsSource = lijstcomedians2;
@@ -147,7 +194,6 @@ namespace DMP_Project_WPF
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             VulComboboxComedians();
-            
         }
 
         private void DatagridEvents_selectionChanged(object sender, SelectionChangedEventArgs e)
@@ -157,7 +203,7 @@ namespace DMP_Project_WPF
             Event eventje = (Event)datagridEvents.SelectedItem;
             if (eventje is null)
             {
-                MessageBox.Show("er niet naast clicken..");
+                MessageBox.Show("Selecteer Event!");
             }
             else
             {
@@ -169,7 +215,7 @@ namespace DMP_Project_WPF
                 sql += " INNER JOIN Comedy.Event AS EV ON  EVCO.eventId = EV.id";
                 sql += " WHERE  EV.naam = @eventnaam ";
 
-                string comediansDitEvent = null;
+                string comediansDitEvent = "Comedians: " + System.Environment.NewLine;
 
                 lijsteventComedians = DatabaseOperations.OphalenComediansVan1Event(sql, eventnaam);
                 foreach (var item in lijsteventComedians)
