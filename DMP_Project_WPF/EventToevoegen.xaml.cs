@@ -31,7 +31,7 @@ namespace DMP_Project_WPF
         int locatienummer;
         List<Comedian> lijstcomedians = new List<Comedian>();
         List<Event> lijstevents = new List<Event>();
-        List<string> stringlijstcomedians = new List<string>();
+        // List<string> stringlijstcomedians = new List<string>();
         List<Comedian> lijsteventComedians = new List<Comedian>();
         List<DatumUur> lijstdatums = new List<DatumUur>();
 
@@ -54,7 +54,7 @@ namespace DMP_Project_WPF
 
             // ER MOET NOG DATAVALIDATIE GEBEUREN !!!
 
-            NewEvent newevent1 = new NewEvent(eventnaam5,eventrolstoel5,eventkaartenVrij5,eventcafesetting5,eventprijs5,eventwebsite5,eventleeftijd5);
+            Event newevent1 = new Event(eventnaam5,eventrolstoel5,eventkaartenVrij5,eventcafesetting5,eventprijs5,eventwebsite5,eventleeftijd5);
 
             DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
 
@@ -96,7 +96,7 @@ namespace DMP_Project_WPF
         private void BTNComedianToevoegen_Click(object sender, RoutedEventArgs e)
         {
             // hier wordt telke male een extra eventcomedian toegevoegd 
-            Comedian2 selectedComedian = (Comedian2)cmbComedians.SelectedItem;
+            Comedian selectedComedian = (Comedian)cmbComedians.SelectedItem;
             Event selectedEvent = (Event)datagridEvents.SelectedItem;
             if (selectedComedian is null || selectedEvent is null )
             {
@@ -157,18 +157,13 @@ namespace DMP_Project_WPF
         private void VulComboboxComedians()
         {
             // een lijst met alle comedians wordt opgehaald en in de combobox getoond.
-            List<Comedian2> lijstcomedians2 = new List<Comedian2>();
+            List<Comedian> lijstcomedians2 = new List<Comedian>();
             string sql = "SELECT * FROM Comedy.Comedian";
             sql += " ORDER BY naam";
 
             lijstcomedians = DatabaseOperations.OphalenComediansOpNaamGesorteerd(sql);
-            //  de klasse comedian bevat geen ToString, dus lijstComedian copiëren naar lijstComedian2
-            foreach (Comedian comedian1 in lijstcomedians)
-            {
-                Comedian2 comedian2 = new Comedian2(comedian1.id, comedian1.naam, comedian1.voornaam);
-                lijstcomedians2.Add(comedian2);
-            }
-        cmbComedians.ItemsSource = lijstcomedians2;
+            
+            cmbComedians.ItemsSource = lijstcomedians;
         }
 
         private void VulListboxEventsUwLocatie(int locatieNr2)
@@ -185,10 +180,8 @@ namespace DMP_Project_WPF
 
             lijstevents = DatabaseOperations.MaakEventLijstOpbasisLocatieNr(sql, locatieNr2);
 
-            
             datagridEvents.ItemsSource = lijstevents;
 
-            
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

@@ -65,7 +65,7 @@ namespace DMP_Project_WPF
             {
                 sql += " AND  EV.cafeSetting = 'true' ";
             }
-            if (!(provincie1 is null))
+            if (provincie1 != "")
             {
                 sql += " AND  LO.provincie = @provincie " ;
             }
@@ -81,7 +81,7 @@ namespace DMP_Project_WPF
 
             lijstevents = DatabaseOperations.ZoekEvents2(sql,provincie1);         
 
-            // lijstevents = DatabaseOperations.ZoekEvents(sql);         
+                   
 
             dataEvents.ItemsSource = lijstevents;
         }

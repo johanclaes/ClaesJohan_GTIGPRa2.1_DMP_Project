@@ -33,52 +33,39 @@ namespace DMP_Project_WPF
         List<string> stringlijstcomedians = new List<string>();
         List<string> stringlijstcomedians2 = new List<string>();
         int boekingsburoid1;
-        Comedian2 selectedComedian;
+        Comedian selectedComedian;
         string selectedComedianNaam; 
 
         private void VulListboxVanDitBuro(int boekingsburoid2)
         {
             // comedians van hun boekingsbureau, zie je in de listbox
-            List<Comedian2> lijstcomedians2 = new List<Comedian2>();
+            List<Comedian> lijstcomedians2 = new List<Comedian>();
             string sql = "SELECT * FROM Comedy.Comedian";
             sql += " WHERE boekingsburoid = @id2 ";                             // het boekingsburoid komt mee met het formulier
             sql += " ORDER BY naam";
 
             lijstcomedians = DatabaseOperations.OphalenComediansVan1Buro(sql, boekingsburoid2);
-            //  de klasse comedian bevat geen ToString, dus lijstComedian copiëren naar lijstComedian2
-            foreach (Comedian comedian1 in lijstcomedians)
-            {
-                Comedian2 comedian2 = new Comedian2(comedian1.naam,comedian1.voornaam);
-                lijstcomedians2.Add(comedian2);
-                
-            }
-            // lbComedians.ItemsSource = stringlijstcomedians2;
-            lbComedians.ItemsSource = lijstcomedians2;
+            lbComedians.ItemsSource = lijstcomedians;
 
         }
 
         private void VulComboboxComedianZonderBuro()
         {
             // enkel comedians die geen boekingsburo hebben, kan je toevoegen en komen in de combobox
-            List<Comedian2> lijstcomedians2 = new List<Comedian2>();
+            List<Comedian> lijstcomedians2 = new List<Comedian>();
             string sql = "SELECT * FROM Comedy.Comedian";
             sql += " WHERE boekingsburoid IS NULL ";                            // als boekingsburoid = NULL dan is comedian zonder buro
             sql += " ORDER BY naam";
 
             lijstcomedians = DatabaseOperations.OphalenComediansOpNaamGesorteerd(sql);
-            foreach (Comedian comedian1 in lijstcomedians)
-            {
-                Comedian2 comedian2 = new Comedian2(comedian1.naam, comedian1.voornaam);
-                lijstcomedians2.Add(comedian2);
-            }
-            cmbComedians.ItemsSource = lijstcomedians2;
+            cmbComedians.ItemsSource = lijstcomedians;
 
         }
 
         private void BTNVoegToe_Click(object sender, RoutedEventArgs e)
         {
             // uit de combobox van comedians zonder buro, kan er ene toegevoegd worden aan het eigen buro
-            selectedComedian = (Comedian2)cmbComedians.SelectedItem;
+            selectedComedian = (Comedian)cmbComedians.SelectedItem;
             if (selectedComedian is null)
             {
                 MessageBox.Show("Selecteer een Comedian in de Combobox.");
@@ -105,7 +92,7 @@ namespace DMP_Project_WPF
         private void BTNVerwijder_Click(object sender, RoutedEventArgs e)
         {
             // als een comedian niet meer wil verdergaan met ons buro, aanvinken in listbox en verwijder clicken
-            selectedComedian = (Comedian2)lbComedians.SelectedItem;
+            selectedComedian = (Comedian)lbComedians.SelectedItem;
             if (selectedComedian is null)
             {
                 MessageBox.Show("Selecteer een Comedian in de listbox.");
@@ -158,7 +145,7 @@ namespace DMP_Project_WPF
             // string fout = Valideer();
             if (string.IsNullOrEmpty(fout))
             {
-                Comedian2 comedian8 = new Comedian2(txtNaam.Text, txtVoornaam.Text, calGeboortedatum.SelectedDate.Value);
+                Comedian comedian8 = new Comedian(txtNaam.Text, txtVoornaam.Text, calGeboortedatum.SelectedDate.Value);
 
                 DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
 
@@ -187,7 +174,7 @@ namespace DMP_Project_WPF
 
         private void BTNComedian_Stopt_Click(object sender, RoutedEventArgs e)
         {
-            selectedComedian = (Comedian2)cmbComedians.SelectedItem;
+            selectedComedian = (Comedian)cmbComedians.SelectedItem;
             if (selectedComedian is null)
             {
                 MessageBox.Show("Selecteer een Comedian in de combobox.");

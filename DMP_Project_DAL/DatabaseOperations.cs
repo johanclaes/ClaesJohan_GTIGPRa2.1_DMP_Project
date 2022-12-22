@@ -173,19 +173,6 @@ namespace DMP_Project_DAL
         }
 
 
-        public static List<Event2> ZoekEvents(string sqlQuery)
-        {
-
-            List<Event2> zoeklijst = new List<Event2>();
-            DateTime dendatum = DateTime.Parse("15/12/2022 20:15");
-            Event2 gezelligeAvond = new Event2("lachen", dendatum, "werft", "Geel",  true, 16);
-            zoeklijst.Add(gezelligeAvond);
-            gezelligeAvond = new Event2("moppen_tappen", dendatum, "het getouw", "Mol", true, 11);
-            zoeklijst.Add(gezelligeAvond);
-
-            return zoeklijst;
-        }
-
         public static List<Event2> ZoekEvents2(string sqlQuery,string provincie3)
         {
 
@@ -212,26 +199,40 @@ namespace DMP_Project_DAL
          , splitOn: "id,id,id,id").Distinct().ToList();
             _db.Close();
 
-
-            DateTime dendatum = DateTime.Parse("15/12/2022 20:15");
+            // 55555
+            
             foreach (var comedyPlaats in result3)
             {
-                float prijs7;
-                if (comedyPlaats.EventLocaties.First().Event.prijs == null)
+                string sql9 = "SELECT DA.id, DA.datumTijdstip  ";
+                sql9 += " FROM Comedy.DatumUur AS DA";
+                sql9 += " INNER JOIN Comedy.Event AS EV ON EV.id = DA.eventId";
+                sql9 += " WHERE  EV.id = @id5 ";
+
+                int id5 = (int)comedyPlaats.EventLocaties.First().Event.id;
+
+                Start();
+                var lijstTijdstippen = _db.Connectie.Query<DatumUur>(sql9, param: new { id5 = id5 }).ToList();
+                _db.Close();
+
+                foreach (var tijdstip in lijstTijdstippen)
                 {
-                    prijs7 = -1;
+                    DateTime dendatum = tijdstip.datumTijdstip;
+                    float prijs7;
+                    if (comedyPlaats.EventLocaties.First().Event.prijs == null)
+                    {
+                        prijs7 = -1;
+                    }
+                    else
+                    {
+                        prijs7 = (float)comedyPlaats.EventLocaties.First().Event.prijs;
+                    }
+                    string eventNaam8 = comedyPlaats.EventLocaties.First().Event.naam;
+                    Event2 gezelligeAvond = new Event2(eventNaam8, dendatum, comedyPlaats.naam, comedyPlaats.gemeente, true, prijs7);
+                    zoeklijst.Add(gezelligeAvond);
                 }
-                else
-                {
-                    prijs7 = (float)comedyPlaats.EventLocaties.First().Event.prijs;
-                }
-                string eventNaam8 = comedyPlaats.EventLocaties.First().Event.naam;
-                Event2 gezelligeAvond = new Event2(eventNaam8, dendatum, comedyPlaats.naam , comedyPlaats.gemeente , true, prijs7);
-                zoeklijst.Add(gezelligeAvond);
+
+                
             }
-
-
-
 
             return zoeklijst;
         }

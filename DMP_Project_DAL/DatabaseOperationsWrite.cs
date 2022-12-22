@@ -21,7 +21,7 @@ namespace DMP_Project_DAL
             _db.Open();
         }
 
-        public  bool ComedianToevoegen(Comedian2 comedian2)
+        public  bool ComedianToevoegen(Comedian comedian2)
         {
 
             string sql = @"INSERT INTO Comedy.Comedian (naam, voornaam, geboortedatum)
@@ -141,7 +141,7 @@ namespace DMP_Project_DAL
             return false;
         }
 
-        public bool NewEventToevoegen(NewEvent newevent2,int locationNr,DateTime eventdatetime2)
+        public bool NewEventToevoegen(Event newevent2,int locationNr,DateTime eventdatetime2)
         {
             // eerst wordt er een event aangemaakt
 
@@ -191,7 +191,7 @@ namespace DMP_Project_DAL
 
                 var affectedRows2 = db.Execute(sql3, parameters3);
 
-                return true;
+                return true;                // dit gaat hij niet goed vinden
 
                 
             }
@@ -200,7 +200,7 @@ namespace DMP_Project_DAL
         }
 
 
-        public bool ComedianToevoegenEvent(Event event2, Comedian2 comedian2)
+        public bool ComedianToevoegenEvent(Event event2, Comedian comedian2)
         {
 
             //      blable-a

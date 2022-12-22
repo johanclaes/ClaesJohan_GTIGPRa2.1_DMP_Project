@@ -1,40 +1,37 @@
-﻿using System;
+﻿using DMP_Project_Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DMP_Project_Models
+namespace DMP_Project_DAL
 {
-    public class Comedian2
+    public partial class Comedian   
     {
-        public int id { get; set; }
-        public string naam { get; set; }
-        public string voornaam  { get; set; }
-        public DateTime geboortedatum { get; set; }
-
-        public Comedian2(int id, string naam, string voornaam)
+        public Comedian(int id, string naam, string voornaam)
         {
             this.id = id;
             this.naam = naam;
             this.voornaam = voornaam;
         }
-        public Comedian2(string naam, string voornaam, DateTime geboortedatum)
+        public Comedian(string naam, string voornaam, DateTime geboortedatum)
         {
             this.naam = naam;
             this.voornaam = voornaam;
             this.geboortedatum = geboortedatum;
         }
 
-        public Comedian2(string naam, string voornaam)
+        public Comedian(string naam, string voornaam)
         {
             this.naam = naam;
             this.voornaam = voornaam;
         }
 
+
         public override string ToString()
         {
-            return voornaam + " " + naam;
+            return this.voornaam + " " + this.naam;
         }
     }
 }
