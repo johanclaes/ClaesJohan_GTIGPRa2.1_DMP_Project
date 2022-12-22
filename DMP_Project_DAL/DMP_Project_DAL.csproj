@@ -99,8 +99,14 @@
     <Compile Include="LocatieContact.cs">
       <DependentUpon>ComedyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Partials\Boekingsburo.cs" />
     <Compile Include="Partials\Comedian.cs" />
+    <Compile Include="Partials\DatumUur.cs" />
     <Compile Include="Partials\Event.cs" />
+    <Compile Include="Partials\EventComedian.cs" />
+    <Compile Include="Partials\EventLocatie.cs" />
+    <Compile Include="Partials\Locatie.cs" />
+    <Compile Include="Partials\LocatieContact.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -14,7 +14,6 @@ namespace DMP_Project_Models
         public bool IsGeldig()
         {
             return string.IsNullOrWhiteSpace(Foutmeldingen);            // hier wordt er naar foutmeldingen verwezen.
-
         }
         public string Foutmeldingen
         {
@@ -22,11 +21,11 @@ namespace DMP_Project_Models
             {
                 string foutmeldingen = "";
 
-                foreach (var item in this.GetType().GetProperties()) //reflection : voor alle properties gelinkt aan die klasse
+                foreach (var item in this.GetType().GetProperties())    //reflection ; hij gaat alle properties van de klasse af
                 {
-                    if (item.CanRead)                               // als er bij die property een getter bij staat.
+                    if (item.CanRead)
                     {
-                        string fout = Valideer(item.Name);
+                        string fout = this[item.Name];
                         if (!string.IsNullOrWhiteSpace(fout))
                         {
                             foutmeldingen += fout + Environment.NewLine;

@@ -60,28 +60,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Boekingsbureau.cs">
+    <Compile Include="formulieren\Boekingsbureau.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Boekingsbureau.Designer.cs">
+    <Compile Include="formulieren\Boekingsbureau.Designer.cs">
       <DependentUpon>Boekingsbureau.cs</DependentUpon>
     </Compile>
     <Compile Include="EventToevoegen.xaml.cs">
       <DependentUpon>EventToevoegen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Geboortedatum.cs">
+    <Compile Include="formulieren\Geboortedatum.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Geboortedatum.Designer.cs">
+    <Compile Include="formulieren\Geboortedatum.Designer.cs">
       <DependentUpon>Geboortedatum.cs</DependentUpon>
     </Compile>
     <Compile Include="ToonPlaylist.xaml.cs">
       <DependentUpon>ToonPlaylist.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UsernamePassword.cs">
+    <Compile Include="formulieren\UsernamePassword.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UsernamePassword.Designer.cs">
+    <Compile Include="formulieren\UsernamePassword.Designer.cs">
       <DependentUpon>UsernamePassword.cs</DependentUpon>
     </Compile>
     <Compile Include="ZoekEvent.xaml.cs">
@@ -133,17 +133,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Boekingsbureau.resx">
+    <EmbeddedResource Include="formulieren\Boekingsbureau.resx">
       <DependentUpon>Boekingsbureau.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Geboortedatum.resx">
+    <EmbeddedResource Include="formulieren\Geboortedatum.resx">
       <DependentUpon>Geboortedatum.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="UsernamePassword.resx">
+    <EmbeddedResource Include="formulieren\UsernamePassword.resx">
       <DependentUpon>UsernamePassword.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
@@ -168,8 +168,6 @@
       <Name>DMP_Project_Models</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="formulieren\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

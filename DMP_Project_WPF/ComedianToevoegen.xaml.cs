@@ -30,8 +30,8 @@ namespace DMP_Project_WPF
         }
 
         List<Comedian> lijstcomedians = new List<Comedian>();
-        List<string> stringlijstcomedians = new List<string>();
-        List<string> stringlijstcomedians2 = new List<string>();
+        // List<string> stringlijstcomedians = new List<string>();
+        // List<string> stringlijstcomedians2 = new List<string>();
         int boekingsburoid1;
         Comedian selectedComedian;
         string selectedComedianNaam; 
@@ -139,13 +139,14 @@ namespace DMP_Project_WPF
         private void BTNMaakComedianAan_Click(object sender, RoutedEventArgs e)
         {
             // hier moet voornaam en achternaam ingegeven worden, bij voorkeur ook geboortedatum
-            
 
-            string fout = "";
+            Comedian comedian8 = new Comedian(txtNaam.Text, txtVoornaam.Text, calGeboortedatum.SelectedDate.Value);
+
+            // string fout = "";
             // string fout = Valideer();
-            if (string.IsNullOrEmpty(fout))
+            if (comedian8.IsGeldig())
             {
-                Comedian comedian8 = new Comedian(txtNaam.Text, txtVoornaam.Text, calGeboortedatum.SelectedDate.Value);
+                
 
                 DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
 
@@ -161,7 +162,8 @@ namespace DMP_Project_WPF
             }
             else
             {
-                MessageBox.Show(fout);
+                // MessageBox.Show(fout);
+                MessageBox.Show(comedian8.Foutmeldingen);
             }
 
         }
@@ -185,7 +187,7 @@ namespace DMP_Project_WPF
                 DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();        // eerst eventcomedian opkuisen .. dan comedian deleten
                 if (xyz.ComedianStoptErmee(selectedComedianNaam))
                 {
-                    MessageBox.Show("Comedian heeft zijn schop afgekuisd.");
+                    MessageBox.Show("Comedian heeft zijn schop afgekuist.");
                 }
                 else
                 {
