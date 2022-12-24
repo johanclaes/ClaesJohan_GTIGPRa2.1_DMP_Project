@@ -30,15 +30,21 @@ namespace DMP_Project_DAL
                 switch (columnName)
                 {
                     case "naam":
-                        if (string.IsNullOrWhiteSpace(columnName))
+                        if (string.IsNullOrWhiteSpace(naam))
                         {
                             result = "Event-Naam is een verplicht veld!";
                         }
                         break;
                     case "leeftijd":
-                        if (string.IsNullOrWhiteSpace(columnName))
+                        if (string.IsNullOrWhiteSpace(leeftijd))
                         {
                             result = "Wat is de leeftijd-indicatie ?";
+                        }
+                        break;
+                    case "prijs":
+                        if (0 >= prijs)
+                        {
+                            result = "Hoeveel kost het ?";
                         }
                         break;
 

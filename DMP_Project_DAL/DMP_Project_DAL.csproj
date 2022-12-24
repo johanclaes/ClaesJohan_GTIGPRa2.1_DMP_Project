@@ -92,6 +92,7 @@
     <Compile Include="EventLocatie.cs">
       <DependentUpon>ComedyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="FileOperations.cs" />
     <Compile Include="IDatabaseConnectie.cs" />
     <Compile Include="Locatie.cs">
       <DependentUpon>ComedyModel.tt</DependentUpon>

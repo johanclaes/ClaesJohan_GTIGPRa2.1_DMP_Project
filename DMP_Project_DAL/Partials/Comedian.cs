@@ -49,7 +49,7 @@ namespace DMP_Project_DAL
             get
             {
                 string result = null;
-                DateTime leeftijdsgrens = new DateTime(2005, 01, 01);
+                DateTime leeftijdsgrens = new DateTime(2005, 01, 01);   // een comedian moet voor deze datum geboren zijn
                 switch (columnName)
                 {
                     case "naam":

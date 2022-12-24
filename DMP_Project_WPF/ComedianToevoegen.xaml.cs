@@ -138,33 +138,36 @@ namespace DMP_Project_WPF
 
         private void BTNMaakComedianAan_Click(object sender, RoutedEventArgs e)
         {
-            // hier moet voornaam en achternaam ingegeven worden, bij voorkeur ook geboortedatum
+            // hier moet voornaam en achternaam ingegeven worden, en geboortedatum voor 1 jan 2005
 
-            Comedian comedian8 = new Comedian(txtNaam.Text, txtVoornaam.Text, calGeboortedatum.SelectedDate.Value);
-
-            // string fout = "";
-            // string fout = Valideer();
-            if (comedian8.IsGeldig())
+            try
             {
-                
-
-                DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
-
-                if (xyz.ComedianToevoegen(comedian8))
+                Comedian comedian8 = new Comedian(txtNaam.Text, txtVoornaam.Text, calGeboortedatum.SelectedDate.Value);
+                if (comedian8.IsGeldig())
                 {
-                    MessageBox.Show("Comedian werd toegevoegd");
-                    VulComboboxComedianZonderBuro();
+                    DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
+                    if (xyz.ComedianToevoegen(comedian8))
+                    {
+                        MessageBox.Show("Comedian werd toegevoegd");
+                        VulComboboxComedianZonderBuro();
+                    }
+                    else
+                    {
+                        MessageBox.Show("De comedian is nog geen lid van het clubje, nogmaals ... ");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("De comedian is nog geen lid van het clubje, nogmaals ... ");
+                    MessageBox.Show(comedian8.Foutmeldingen);
                 }
             }
-            else
+            catch (Exception)
             {
-                // MessageBox.Show(fout);
-                MessageBox.Show(comedian8.Foutmeldingen);
+                MessageBox.Show("Gelieve geboortedatum te selecteren.");
+                // fileOperations.foutLoggen(ex);                           // fout wegschrijven in file op pc
             }
+
+            
 
         }
 
