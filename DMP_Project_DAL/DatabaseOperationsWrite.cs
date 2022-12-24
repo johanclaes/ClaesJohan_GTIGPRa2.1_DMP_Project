@@ -141,7 +141,7 @@ namespace DMP_Project_DAL
             return false;
         }
 
-        public bool NewEventToevoegen(Event newevent2,int locationNr,DateTime eventdatetime2)
+        public bool NewEventToevoegen(Event newevent2,int locationNr,DatumUur eventdatetime2)
         {
             // eerst wordt er een event aangemaakt
 
@@ -162,13 +162,8 @@ namespace DMP_Project_DAL
 
             using (IDbConnection db = new SqlConnection(ConnectionString))                  //   ***
             {
-                // int identity;
-                // var affectedRows = db.Execute(sql, parameters);
                 var identity = db.ExecuteScalar<int>(sql, parameters);
-                // return identity;
-                // return identity;
-                // var eventidinserted = db.Execute(sql, parameters).Single();
-
+                
                 // en vervolgens een eventLocatie dat het event met de eigen locatie verbindt
                 string sql2 = @"INSERT INTO Comedy.EventLocatie (eventId, locatieId)
                            VALUES (@eventid, @locatieid)";
@@ -177,7 +172,6 @@ namespace DMP_Project_DAL
                     @eventid = identity,
                     @locatieid = locationNr,
                 };
-
                 var affectedRows = db.Execute(sql2, parameters2);
 
                 // en vervolgens een eventLocatie dat het event met de eigen locatie verbindt
@@ -186,14 +180,12 @@ namespace DMP_Project_DAL
                 var parameters3 = new
                 {
                     @eventid = identity,
-                    @datumtijdstip = eventdatetime2,
+                    @datumtijdstip = eventdatetime2.datumTijdstip,
                 };
 
                 var affectedRows2 = db.Execute(sql3, parameters3);
 
-                return true;                // dit gaat hij niet goed vinden
-
-                
+                return true;                
             }
 
             return false;

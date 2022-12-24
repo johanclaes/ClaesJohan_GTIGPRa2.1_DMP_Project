@@ -115,26 +115,6 @@ namespace DMP_Project_WPF
             
         }
 
-        private string Valideer()
-        {
-            string fout = "";
-
-            
-            if (string.IsNullOrEmpty(txtVoornaam.Text))
-            {
-                fout += "Voornaam is verplicht" + Environment.NewLine;
-            }
-            if (string.IsNullOrEmpty(txtNaam.Text))
-            {
-                fout += "Naam is verplicht" + Environment.NewLine;
-            }
-
-            return fout;
-
-        }
-
-
-
 
         private void BTNMaakComedianAan_Click(object sender, RoutedEventArgs e)
         {
@@ -161,10 +141,10 @@ namespace DMP_Project_WPF
                     MessageBox.Show(comedian8.Foutmeldingen);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 MessageBox.Show("Gelieve geboortedatum te selecteren.");
-                // fileOperations.foutLoggen(ex);                           // fout wegschrijven in file op pc
+                FileOperations.foutLoggen(ex,"BTNMaakComedianAan_Click");                           // fout wegschrijven in file op pc
             }
 
             

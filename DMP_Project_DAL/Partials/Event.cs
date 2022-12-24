@@ -64,33 +64,9 @@ namespace DMP_Project_DAL
             }
         }
 
-        
-
         public override string ToString()
         {
             return base.ToString();
-        }
-
-        public override string Valideer(string propertynaam)
-        {
-            if (propertynaam == "naam" && string.IsNullOrWhiteSpace(naam))
-            {
-                return "Event-naam is een verplicht in te vullen veld!";
-            }
-            else if (propertynaam == "website" && string.IsNullOrWhiteSpace(website))
-            {
-                return "Wat is de website ?";
-            }
-            else if (propertynaam == "prijs" && prijs < 0)
-            {
-                return "Prijs moet groter of gelijk dan 0 zijn!";
-            }
-            else if (propertynaam == "leeftijd" && string.IsNullOrWhiteSpace(leeftijd))
-            {
-                return "Gelieve de leeftijdsgrens aan te geven !";
-            }
-
-            return "";
         }
 
     }

@@ -8,7 +8,6 @@
         Title="EventToevoegen" Height="450" Width="800" Background="#FF9292EA" Loaded="Window_Loaded">
     <Grid>
         <TextBlock Text="Event Toevoegen" Margin="64,20,425.6,356" FontSize="18"/>
-        
         <Button x:Name="btnVoegEventToe" Content="Voeg Event toe" HorizontalAlignment="Left" Margin="566,64,0,0" VerticalAlignment="Top" Width="114" Click="VoegEventToe_Click"/>
         <Button x:Name="btnUpdateEvent" Content="Update Event" HorizontalAlignment="Left" Margin="566,94,0,0" VerticalAlignment="Top" Width="114" Click="BTNUpdateEvent_Click"/>
         <DatePicker x:Name="calDatum" HorizontalAlignment="Left" Margin="30,339,0,0" VerticalAlignment="Top" Height="22" Width="120"/>
@@ -23,10 +22,24 @@
         <ComboBox x:Name="cmbComedians" HorizontalAlignment="Left" Margin="396,133,0,0" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="txtTijdstip" HorizontalAlignment="Left" Height="23" Margin="32,372,0,0" TextWrapping="Wrap" Text="18:30" VerticalAlignment="Top" Width="155"/>
         <Button x:Name="btnComedianToevoegen" Content="Comedian Toevoegen" HorizontalAlignment="Left" Margin="570,135,0,0" VerticalAlignment="Top" Width="133" Click="BTNComedianToevoegen_Click"/>
-
-        <DataGrid x:Name="datagridEvents" AutoGenerateColumns="true" Margin="228,198,30.6,39" Grid.Column="0" SelectionChanged="DatagridEvents_selectionChanged"/>
         <Button x:Name="btnDatum_UurToevoegen" Content="extra Datum_Uur Toevoegen" HorizontalAlignment="Left" Margin="30,305,0,0" VerticalAlignment="Top" Width="157" Click="btnDatum_UurToevoegen_Click"/>
 
+
+        <DataGrid x:Name="datagridEvents" Margin="228,198,30.6,39" Grid.Column="0" SelectionChanged="DatagridEvents_selectionChanged" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="eventname" Header="Event-naam" Binding="{Binding naam}"/>
+                <DataGridTextColumn x:Name="website" Header="Website" Binding="{Binding website}"/>
+                <DataGridTextColumn x:Name="prijs" Header="Prijs" Binding="{Binding prijs}"/>
+                <DataGridTextColumn x:Name="leeftijd" Header="Leeftijdsindicatie" Binding="{Binding leeftijd}"/>
+                <DataGridTextColumn x:Name="rolstoel" Header="Rolstoel" Binding="{Binding rolstoel}"/>
+                <DataGridTextColumn x:Name="cafesetting" Header="Cafesetting" Binding="{Binding cafeSetting}"/>
+                <DataGridTextColumn x:Name="kaartenvrij" Header="Kaarten-Vrij" Binding="{Binding kaartenVrij}"/>
+                <DataGridTextColumn x:Name="datumuur" Header="Datum-Tijdstip"/>
+            </DataGrid.Columns>
+            
+        </DataGrid>
+        
+        
 
     </Grid>
 </Window>

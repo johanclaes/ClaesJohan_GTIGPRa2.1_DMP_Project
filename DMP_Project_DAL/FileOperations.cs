@@ -9,12 +9,13 @@ namespace DMP_Project_DAL
 {
     public class FileOperations
     {
-        public void foutLoggen(Exception fout)
+        public static void foutLoggen(Exception fout,string waarInProgramma)
         {
             using (StreamWriter writer = new StreamWriter("foutenbestand.txt", true))
             {
                 // true wil zeggen : vanachter toevoegen (append op true)
                 writer.WriteLine(DateTime.Now.ToString("HH:mm:ss"));
+                writer.WriteLine(waarInProgramma);
                 writer.WriteLine(fout.GetType().Name);
                 writer.WriteLine(fout.Message);
                 writer.WriteLine(fout.StackTrace);

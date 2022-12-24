@@ -9,8 +9,6 @@ namespace DMP_Project_Models
 {
     public abstract class BasisKlasse : IDataErrorInfo
     {
-        public abstract string Valideer(string propertynaam);
-
         public bool IsGeldig()
         {
             return string.IsNullOrWhiteSpace(Foutmeldingen);            // hier wordt er naar foutmeldingen verwezen.

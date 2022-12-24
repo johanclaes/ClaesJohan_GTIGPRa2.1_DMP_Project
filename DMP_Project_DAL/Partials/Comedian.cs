@@ -80,23 +80,6 @@ namespace DMP_Project_DAL
 
         }
 
-        public override string Valideer(string propertynaam)
-        {
-            DateTime leeftijdsgrens = new DateTime(2005, 01, 01);
-            if (propertynaam == "naam" && string.IsNullOrWhiteSpace(naam))
-            {
-                return "Naam is een verplicht in te vullen veld!";
-            }
-            else if (propertynaam == "voornaam" && string.IsNullOrWhiteSpace(voornaam))
-            {
-                return "Voornaam ook nog invullen!";
-            }
-            else if (propertynaam == "geboortedatum" && geboortedatum > leeftijdsgrens )
-            {
-                return "Comedians zijn voor 2005 geboren!";
-            }
-
-            return "";
-        }
+        
     }
 }
