@@ -26,12 +26,9 @@ namespace DMP_Project_WPF
             InitializeComponent();
             VulListboxVanDitBuro(boekingsburoid);
             boekingsburoid1 = boekingsburoid;
-            
         }
 
         List<Comedian> lijstcomedians = new List<Comedian>();
-        // List<string> stringlijstcomedians = new List<string>();
-        // List<string> stringlijstcomedians2 = new List<string>();
         int boekingsburoid1;
         Comedian selectedComedian;
         string selectedComedianNaam; 
@@ -39,25 +36,16 @@ namespace DMP_Project_WPF
         private void VulListboxVanDitBuro(int boekingsburoid2)
         {
             // comedians van hun boekingsbureau, zie je in de listbox
-            List<Comedian> lijstcomedians2 = new List<Comedian>();
-            string sql = "SELECT * FROM Comedy.Comedian";
-            sql += " WHERE boekingsburoid = @id2 ";                             // het boekingsburoid komt mee met het formulier
-            sql += " ORDER BY naam";
-
-            lijstcomedians = DatabaseOperations.OphalenComediansVan1Buro(sql, boekingsburoid2);
+ 
+            lijstcomedians = DatabaseOperations.OphalenComediansVan1Buro(boekingsburoid2);
             lbComedians.ItemsSource = lijstcomedians;
-
         }
 
         private void VulComboboxComedianZonderBuro()
         {
             // enkel comedians die geen boekingsburo hebben, kan je toevoegen en komen in de combobox
-            List<Comedian> lijstcomedians2 = new List<Comedian>();
-            string sql = "SELECT * FROM Comedy.Comedian";
-            sql += " WHERE boekingsburoid IS NULL ";                            // als boekingsburoid = NULL dan is comedian zonder buro
-            sql += " ORDER BY naam";
 
-            lijstcomedians = DatabaseOperations.OphalenComediansOpNaamGesorteerd(sql);
+            lijstcomedians = DatabaseOperations.OphalenComediansZonderBuro();
             cmbComedians.ItemsSource = lijstcomedians;
 
         }
@@ -147,8 +135,6 @@ namespace DMP_Project_WPF
                 FileOperations.foutLoggen(ex,"BTNMaakComedianAan_Click");                           // fout wegschrijven in file op pc
             }
 
-            
-
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -159,6 +145,8 @@ namespace DMP_Project_WPF
 
         private void BTNComedian_Stopt_Click(object sender, RoutedEventArgs e)
         {
+            // uit de combobox van comedians zonder buro, kan er 1 selecteren om definitief te verwijderen
+
             selectedComedian = (Comedian)cmbComedians.SelectedItem;
             if (selectedComedian is null)
             {

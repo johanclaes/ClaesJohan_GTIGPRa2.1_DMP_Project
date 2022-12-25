@@ -21,8 +21,24 @@ namespace DMP_Project_DAL
             _db.Open();
         }
 
-        public static List<Comedian> OphalenComediansOpNaamGesorteerd(string sqlQuery)
+        public static List<Comedian> OphalenComediansOpNaamGesorteerd()
         {
+            string sqlQuery = "SELECT * FROM Comedy.Comedian";
+            sqlQuery += " ORDER BY naam";
+
+            Start();
+            var result = _db.Connectie.Query<Comedian>(sqlQuery).ToList();                          // query van 1 table = Comedian
+            _db.Close();
+
+            return result;
+        }
+
+        public static List<Comedian> OphalenComediansZonderBuro()
+        {
+            string sqlQuery = "SELECT * FROM Comedy.Comedian";
+            sqlQuery += " WHERE boekingsburoid IS NULL ";                            // als boekingsburoid = NULL dan is comedian zonder buro
+            sqlQuery += " ORDER BY naam";
+
             Start();
             var result = _db.Connectie.Query<Comedian>(sqlQuery).ToList();                          // query van 1 table = Comedian
             _db.Close();
@@ -39,8 +55,12 @@ namespace DMP_Project_DAL
             return result;
         }
 
-        public static List<Comedian> OphalenComediansVan1Buro(string sqlQuery, int id2)
+        public static List<Comedian> OphalenComediansVan1Buro( int id2)
         {
+            string sqlQuery = "SELECT * FROM Comedy.Comedian";
+            sqlQuery += " WHERE boekingsburoid = @id2 ";                             // het boekingsburoid komt mee met het formulier
+            sqlQuery += " ORDER BY naam";
+
             Start();
             var result = _db.Connectie.Query<Comedian>(sqlQuery, param: new { id2 = id2 }).ToList();
             _db.Close();
@@ -67,22 +87,16 @@ namespace DMP_Project_DAL
             return locatieIdNr;
         }
 
-        public static List<PlayListEvent> MaakPlaylist(string sqlQuery)
+
+        public static List<PlayListEvent> MaakPlaylist2(string naam3)
         {
-
-            List<PlayListEvent> playlist = new List<PlayListEvent>();
-            DateTime dendatum = DateTime.Parse("15/12/2022 20:15");
-            
-            PlayListEvent gezelligeAvond = new PlayListEvent("lachen1", "werft1", "Geel", dendatum, "Paul Maes", "+32475891999",true);
-            playlist.Add(gezelligeAvond);
-            gezelligeAvond = new PlayListEvent("moppen_tappen", "het getouw1", "Mol", dendatum, "Maria Jansen","+3214123456",false);
-            playlist.Add(gezelligeAvond);
-
-            return playlist;                      
-        }
-
-        public static List<PlayListEvent> MaakPlaylist2(string sqlQuery,string naam3)
-        {
+            string sqlQuery = "SELECT EV.id, EV.naam, EV.cafeSetting, EventComedian.id, CO.id, DA.datumtijdstip  ";
+            sqlQuery += " FROM Comedy.Event AS EV";
+            sqlQuery += " INNER JOIN Comedy.EventComedian ON EV.id = EventComedian.eventId";
+            sqlQuery += " INNER JOIN Comedy.Comedian AS CO ON  EventComedian.comedianId = CO.id";
+            sqlQuery += " INNER JOIN Comedy.DatumUur AS DA ON EV.id = DA.eventId";
+            sqlQuery += " WHERE  CO.naam = @naam3 ";
+            sqlQuery += " ORDER BY DA.datumTijdstip";
 
             List<PlayListEvent> playlist = new List<PlayListEvent>();
 
@@ -173,10 +187,45 @@ namespace DMP_Project_DAL
         }
 
 
-        public static List<Event2> ZoekEvents2(string sqlQuery,string provincie3)
+        public static List<Event2> ZoekEvents2(string provincie1, Comedian comedian1, string maand1, bool kaartjesvrij1,bool rolstoel1,bool cafesetting1)
         {
 
             List<Event2> zoeklijst = new List<Event2>();
+
+            string sqlQuery = "SELECT LO.id, LO.naam, LO.gemeente, EVLO.id, EV.id, EV.naam, EV.prijs, EVCO.id, CO.id , EV.naam, EV.cafeSetting, LO.provincie, LO.adres ";
+            sqlQuery += " FROM Comedy.Locatie AS LO";
+            sqlQuery += " INNER JOIN Comedy.EventLocatie AS EVLO ON LO.id = EVLO.locatieId";
+            sqlQuery += " INNER JOIN Comedy.Event AS EV ON  EVLO.eventId = EV.id";
+            sqlQuery += " INNER JOIN Comedy.EventComedian AS EVCO ON EV.id = EVCO.eventId";
+            sqlQuery += " INNER JOIN Comedy.Comedian AS CO ON EVCO.comedianId = CO.id";
+            if (kaartjesvrij1)
+            {
+                sqlQuery += " WHERE  EV.kaartenVrij = 'true'  ";
+            }
+            else
+            {
+                sqlQuery += " WHERE  EV.kaartenVrij = 'false' ";
+            }
+            if (rolstoel1)
+            {
+                sqlQuery += " AND  EV.rolstoel = 'true' ";
+            }
+            if (cafesetting1)
+            {
+                sqlQuery += " AND  EV.cafeSetting = 'true' ";
+            }
+            if (provincie1 != "")
+            {
+                sqlQuery += " AND  LO.provincie = @provincie ";
+            }
+            if (!(comedian1 is null))
+            {
+
+            }
+            if (!(maand1 is null))
+            {
+
+            }
 
             Start();
             var result3 = _db.Connectie.Query<Locatie, EventLocatie, Event, EventComedian, Comedian, Locatie>(sqlQuery, 
@@ -195,11 +244,11 @@ namespace DMP_Project_DAL
 
                 return locatie1;
             }
-         , param: new { provincie = provincie3 }
+         , param: new { provincie = provincie1 }
          , splitOn: "id,id,id,id").Distinct().ToList();
             _db.Close();
 
-            // 55555
+            // Vervolgens gaan we van alle events de datum uurs opvragen 
             
             foreach (var comedyPlaats in result3)
             {
@@ -227,7 +276,7 @@ namespace DMP_Project_DAL
                         prijs7 = (float)comedyPlaats.EventLocaties.First().Event.prijs;
                     }
                     string eventNaam8 = comedyPlaats.EventLocaties.First().Event.naam;
-                    Event2 gezelligeAvond = new Event2(eventNaam8, dendatum, comedyPlaats.naam, comedyPlaats.gemeente, true, prijs7);
+                    Event2 gezelligeAvond = new Event2(eventNaam8, dendatum, comedyPlaats.naam, comedyPlaats.gemeente, true, prijs7);       // true is niet correct
                     zoeklijst.Add(gezelligeAvond);
                 }
 
@@ -246,8 +295,15 @@ namespace DMP_Project_DAL
             return result1;
         }
 
-        public static List<Event> MaakEventLijstOpbasisLocatieNr(string sqlQuery,int locatieNummer)
+        public static List<Event> MaakEventLijstOpbasisLocatieNr(int locatieNummer)
         {
+            string sqlQuery = "SELECT EV.id, EV.naam, EV.cafeSetting, EV.website, EV.prijs, EV.leeftijd, EV.rolstoel, EV.kaartenVrij, DA.id, DA.datumTijdstip   ";
+            sqlQuery += " FROM Comedy.Event AS EV";
+            sqlQuery += " INNER JOIN Comedy.EventLocatie AS EVLO ON EV.id = EVLO.eventId";
+            sqlQuery += " INNER JOIN Comedy.Locatie AS LO ON  EVLO.locatieId = LO.id";
+            sqlQuery += " INNER JOIN Comedy.DatumUur AS DA ON EV.id = DA.eventId";
+            sqlQuery += " WHERE  LO.id = @locatieNr ";
+
             Start();
             var result7 = _db.Connectie.Query<Event, DatumUur, Event>(sqlQuery,
                 (Event, DatumUur) =>
@@ -271,8 +327,14 @@ namespace DMP_Project_DAL
             return result7;
         }
 
-        public static List<Comedian> OphalenComediansVan1Event(string sqlQuery, string eventnaam)
+        public static List<Comedian> OphalenComediansVan1Event(string eventnaam)
         {
+
+            string sqlQuery = "SELECT CO.id, CO.naam, CO.voornaam  ";
+            sqlQuery += " FROM Comedy.Comedian AS CO";
+            sqlQuery += " INNER JOIN Comedy.EventComedian AS EVCO ON CO.id = EVCO.comedianId";
+            sqlQuery += " INNER JOIN Comedy.Event AS EV ON  EVCO.eventId = EV.id";
+            sqlQuery += " WHERE  EV.naam = @eventnaam ";
 
             Start();
             var result2 = _db.Connectie.Query<Comedian>(sqlQuery, param: new { eventnaam = eventnaam }).ToList();

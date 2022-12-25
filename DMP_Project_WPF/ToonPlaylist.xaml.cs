@@ -25,25 +25,16 @@ namespace DMP_Project_WPF
         {
             InitializeComponent();
 
-            // MessageBox.Show(naam3);                          // toon de naam van de comedian
+            // op basis van de geboortedatum wordt de naam van de comedian opgezocht, en deze naam wordt gebruikt om zijn playlist samen te stellen
 
-            string sql = "SELECT EV.id, EV.naam, EV.cafeSetting, EventComedian.id, CO.id, DA.datumtijdstip  ";
-            sql += " FROM Comedy.Event AS EV";
-            sql += " INNER JOIN Comedy.EventComedian ON EV.id = EventComedian.eventId";
-            sql += " INNER JOIN Comedy.Comedian AS CO ON  EventComedian.comedianId = CO.id";
-            sql += " INNER JOIN Comedy.DatumUur AS DA ON EV.id = DA.eventId";
-            sql += " WHERE  CO.naam = @naam3 ";
-            sql += " ORDER BY DA.datumTijdstip";
-
-            lijstplaylistevents = DatabaseOperations.MaakPlaylist2(sql,naam3);         // je kan niet zomaar type1 op type2 mappen
+            lijstplaylistevents = DatabaseOperations.MaakPlaylist2(naam3);         
 
             dataComedians.ItemsSource = lijstplaylistevents;
 
             lblComedianName.Content = naam3;                                    // de naam van de comedian wordt bovenaan getoond
         }
 
-        List<Comedian> lijstcomedians = new List<Comedian>();
-        List<PlayListEvent> lijstplaylistevents = new List<PlayListEvent>();
+        List<PlayListEvent> lijstplaylistevents = new List<PlayListEvent>();        // dit is een extra model met enkel info die comedian interesseert
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

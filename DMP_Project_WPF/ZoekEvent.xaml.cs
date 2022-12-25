@@ -27,82 +27,35 @@ namespace DMP_Project_WPF
         }
 
         List<Comedian> lijstcomedians = new List<Comedian>();
-        List<string> stringlijstcomedians = new List<string>();
+        // List<string> stringlijstcomedians = new List<string>();
         List<string> provincies = new List<string>() { "antwerpen", "brabant", "limburg", "oost-vlaanderen", "west-vlaanderen" };
         List<string> maanden = new List<string>() { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
         List<Event2> lijstevents = new List<Event2>();
 
         private void BTNZoek_Click(object sender, RoutedEventArgs e)
         {
+            // op basis van 6 velden wordt er in de volledige eventslist gezocht, en een lijst van model Event2 terug-gegeven
 
             string provincie1 = (string)cmbProvincie.SelectedItem;
-            string comedian1 = (string)cmbComedian.SelectedItem;
+            Comedian comedian1 = (Comedian)cmbComedian.SelectedItem;
             string maand1 = (string)cmbMaand.SelectedItem;
             bool kaartjesvrij1 = (bool)tgKaartenvrij.IsChecked;
             bool rolstoel1 = (bool)tgRolstoel.IsChecked;
             bool cafesetting1 = (bool)tgCafesetting.IsChecked;
 
-            string sql = "SELECT LO.id, LO.naam, LO.gemeente, EVLO.id, EV.id, EV.naam, EV.prijs, EVCO.id, CO.id , EV.naam, EV.cafeSetting, LO.provincie, LO.adres ";
-            sql += " FROM Comedy.Locatie AS LO";
-            sql += " INNER JOIN Comedy.EventLocatie AS EVLO ON LO.id = EVLO.locatieId";
-            sql += " INNER JOIN Comedy.Event AS EV ON  EVLO.eventId = EV.id";
-            sql += " INNER JOIN Comedy.EventComedian AS EVCO ON EV.id = EVCO.eventId";
-            sql += " INNER JOIN Comedy.Comedian AS CO ON EVCO.comedianId = CO.id";
-            // sql += " WHERE  LO.provincie = @provincie AND CO.naam = 'Williams' ";
-            if (kaartjesvrij1)
-            {
-                sql += " WHERE  EV.kaartenVrij = 'true'  ";
-            }
-            else
-            {
-                sql += " WHERE  EV.kaartenVrij = 'false' ";
-            }
-            if (rolstoel1)
-            {
-                sql += " AND  EV.rolstoel = 'true' ";
-            }
-            if (cafesetting1)
-            {
-                sql += " AND  EV.cafeSetting = 'true' ";
-            }
-            if (provincie1 != "")
-            {
-                sql += " AND  LO.provincie = @provincie " ;
-            }
-            if (!(comedian1 is null))
-            {
-
-            }
-            if (!(maand1 is null))
-            {
-
-            }
-
-
-            lijstevents = DatabaseOperations.ZoekEvents2(sql,provincie1);         
-
-                   
-
+            lijstevents = DatabaseOperations.ZoekEvents2(provincie1,comedian1,maand1,kaartjesvrij1,rolstoel1,cafesetting1);         
             dataEvents.ItemsSource = lijstevents;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            List<Comedian> lijstcomedians = new List<Comedian>();
-            string sql = "SELECT * FROM Comedy.Comedian";
-            sql += " ORDER BY naam";
+            // 3 comboboxen worden opgevuld
 
-            lijstcomedians = DatabaseOperations.OphalenComediansOpNaamGesorteerd(sql);
-            foreach (Comedian comedian1 in lijstcomedians)
-            {
-                stringlijstcomedians.Add(comedian1.voornaam + " " + comedian1.naam);
-            }
-            cmbComedian.ItemsSource = stringlijstcomedians;
-
+            lijstcomedians = DatabaseOperations.OphalenComediansOpNaamGesorteerd();
+            
+            cmbComedian.ItemsSource = lijstcomedians;
             cmbMaand.ItemsSource = maanden;
-
             cmbProvincie.ItemsSource = provincies;
-
         }
     }
 }

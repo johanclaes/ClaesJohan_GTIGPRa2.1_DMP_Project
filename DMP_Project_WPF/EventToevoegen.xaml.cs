@@ -32,13 +32,12 @@ namespace DMP_Project_WPF
         int locatienummer;
         List<Comedian> lijstcomedians = new List<Comedian>();
         List<Event> lijstevents = new List<Event>();
-        List<Comedian> lijsteventComedians = new List<Comedian>();
         List<DatumUur> lijstdatums = new List<DatumUur>();
 
         private void VoegEventToe_Click(object sender, RoutedEventArgs e)
         {
             // er wordt dus eerst een event aangemaakt op 1 datum met uur,
-            // en via de knoppen comedian toevoegen en datum toevoegen, maak je het event compleet
+            // en via de buttons "Comedian Toevoegen" en "extra DatumUur Toevoegen", maak je het event compleet
 
             string eventnaam5 = txtEventname.Text;
             bool eventrolstoel5 = (bool)cbRolstoel.IsChecked;
@@ -98,7 +97,6 @@ namespace DMP_Project_WPF
             {
                 System.Windows.MessageBox.Show("Extra voorstelling werd toegevoegd !");
                 txtEventname.Text = "vul in";
-                txtTijdstip.Text = "13:30";
                 VulListboxEventsUwLocatie(locatienummer);
             }
             else
@@ -109,7 +107,7 @@ namespace DMP_Project_WPF
 
         private void BTNComedianToevoegen_Click(object sender, RoutedEventArgs e)
         {
-            // hier wordt telke male een extra eventcomedian toegevoegd 
+            // hier wordt telke male een extra rij in eventcomedian toegevoegd 
             Comedian selectedComedian = (Comedian)cmbComedians.SelectedItem;
             Event selectedEvent = (Event)datagridEvents.SelectedItem;
             if (selectedComedian is null || selectedEvent is null )
@@ -136,7 +134,7 @@ namespace DMP_Project_WPF
 
         private void BTNUpdateEvent_Click(object sender, RoutedEventArgs e)
         {
-            // als de kaartjes op zijn of de prijs wordt aangepast of er wordt extra info via website gegeven
+            // als de kaartjes op zijn of de prijs wordt aangepast of info van website aanpassen, andere properties kunnen NIET aangepast worden
             Event selectedEvent = (Event)datagridEvents.SelectedItem;
             bool nogKaartjes3 = (bool)cbKaartenVrij.IsChecked;
             float.TryParse(txtPrijs.Text,out float prijs3);
@@ -153,7 +151,6 @@ namespace DMP_Project_WPF
                 if (xyz.EventUpdaten(selectedEvent, nogKaartjes3, prijs3, website3))
                 {
                     System.Windows.MessageBox.Show("Eventdata zijn aangepast.");
-                    // txtEventname.Text = "vul in";
                     VulListboxEventsUwLocatie(locatienummer);
                     cmbComedians.SelectedItem = null;
                 }
@@ -162,42 +159,28 @@ namespace DMP_Project_WPF
                     System.Windows.MessageBox.Show("Eventdata nog niet aangepast ... ");
                 }
             }
-
-
-
         }
 
 
         private void VulComboboxComedians()
         {
-            // een lijst met alle comedians wordt opgehaald en in de combobox getoond.
-            List<Comedian> lijstcomedians2 = new List<Comedian>();
-            string sql = "SELECT * FROM Comedy.Comedian";
-            sql += " ORDER BY naam";
-
-            lijstcomedians = DatabaseOperations.OphalenComediansOpNaamGesorteerd(sql);
+            // ***een lijst met alle comedians wordt opgehaald en in de combobox getoond.
             
+            lijstcomedians = DatabaseOperations.OphalenComediansOpNaamGesorteerd();
             cmbComedians.ItemsSource = lijstcomedians;
         }
 
         private void VulListboxEventsUwLocatie(int locatieNr2)
         {
-            // in de listbox gaan we alle events tonen die verwijzen naar de locatie waar dit locatiecontact voor verantwoordelijk is
+            // ***in de listbox gaan we alle events tonen die verwijzen naar de locatie waar dit locatiecontact voor verantwoordelijk is
 
-            string sql = "SELECT EV.id, EV.naam, EV.cafeSetting, EV.website, EV.prijs, EV.leeftijd, EV.rolstoel, EV.kaartenVrij, DA.id, DA.datumTijdstip   ";
-            sql += " FROM Comedy.Event AS EV";
-            sql += " INNER JOIN Comedy.EventLocatie AS EVLO ON EV.id = EVLO.eventId";
-            sql += " INNER JOIN Comedy.Locatie AS LO ON  EVLO.locatieId = LO.id";
-            sql += " INNER JOIN Comedy.DatumUur AS DA ON EV.id = DA.eventId";
-            sql += " WHERE  LO.id = @locatieNr ";
-
-            lijstevents = DatabaseOperations.MaakEventLijstOpbasisLocatieNr(sql, locatieNr2);
-            // datagridEventsView1.AutoGenerateColumns = false;
-            // datagridEvents.Columns[0].Name
-            DataGridView grid = new DataGridView();
-            grid.DataSource = lijstevents;
+            lijstevents = DatabaseOperations.MaakEventLijstOpbasisLocatieNr(locatieNr2);
+            // we maken van de "geneste" property => gewone property zodat deze in datagrid kan getoond worden.
+            foreach (var item in lijstevents)
+            {
+                item.datumUren = item.DatumUurs.First().datumTijdstip;
+            }
             datagridEvents.ItemsSource = lijstevents;
-
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -207,7 +190,7 @@ namespace DMP_Project_WPF
 
         private void DatagridEvents_selectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // als je een event selecteert, dan toont een messagebox de comedians die komen optreden
+            // *** als je een event selecteert, dan toont een messagebox de comedians die komen optreden
 
             Event eventje = (Event)datagridEvents.SelectedItem;
             if (eventje is null)
@@ -217,31 +200,26 @@ namespace DMP_Project_WPF
             else
             {
                 string eventnaam = eventje.naam;
-
-                string sql = "SELECT CO.id, CO.naam, CO.voornaam  ";
-                sql += " FROM Comedy.Comedian AS CO";
-                sql += " INNER JOIN Comedy.EventComedian AS EVCO ON CO.id = EVCO.comedianId";
-                sql += " INNER JOIN Comedy.Event AS EV ON  EVCO.eventId = EV.id";
-                sql += " WHERE  EV.naam = @eventnaam ";
-
+                lijstcomedians = DatabaseOperations.OphalenComediansVan1Event(eventnaam);
                 string comediansDitEvent = "Comedians: " + System.Environment.NewLine;
-
-                lijsteventComedians = DatabaseOperations.OphalenComediansVan1Event(sql, eventnaam);
-                foreach (var item in lijsteventComedians)
+                foreach (var item in lijstcomedians)
                 {
                     string voornaamAchternaam = item.voornaam + " " + item.naam + System.Environment.NewLine;
                     comediansDitEvent += voornaamAchternaam;
                 }
                 System.Windows.MessageBox.Show(comediansDitEvent);
 
-                // eveneens wordt de naam, de website, kaartjes vrij geladen zodat je deze nog kan updaten
+                // eveneens wordt de naam, de website, kaartjes vrij, prijs ... geladen zodat je deze nog kan updaten
 
                 txtEventname.Text = eventje.naam;
                 txtPrijs.Text = eventje.prijs.ToString();
                 txtLeeftijd.Text = eventje.leeftijd;
                 txtWebsite.Text = eventje.website;
                 DateTime datumUur1 = eventje.DatumUurs.First().datumTijdstip;
-                
+                calDatum.SelectedDate = datumUur1;
+                string Timeonly = datumUur1.ToShortTimeString();
+                txtTijdstip.Text = Timeonly;
+
                 if ((bool)eventje.cafeSetting)
                 {
                     rbCafesetting.IsChecked = true;
@@ -269,28 +247,7 @@ namespace DMP_Project_WPF
                     cbRolstoel.IsChecked = false;
                 }
 
-                // de datum en uur zit in een andere tabel
-
-                calDatum.SelectedDate = DateTime.Parse("12/12/2002");
-
-                string sql2 = "SELECT DA.datumTijdstip  ";
-                sql2 += " FROM Comedy.DatumUur AS DA";
-                sql2 += " INNER JOIN Comedy.Event AS EV ON EV.id = DA.eventId";
-                sql2 += " WHERE  EV.naam = @eventnaam ";
-
-                // lijstdatums = DatabaseOperations.GeefDatumVanEvent(sql2, eventnaam);
-                // calDatum.SelectedDate = lijstdatums.First().datumTijdstip;
-                calDatum.SelectedDate = datumUur1;
-
-                // DateTime timeOnly = new DateTime(lijstdatums.First().datumTijdstip.TimeOfDay.Ticks);
-                string Timeonly = datumUur1.ToShortTimeString();
-                txtTijdstip.Text = Timeonly;
             }
-
-
-            
         }
-
-        
     }
 }

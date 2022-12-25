@@ -71,15 +71,11 @@ namespace DMP_Project_DAL
                         }
                         break;
 
-
                 }
                 return result;
             }
-            
-            
-
+        
         }
 
-        
     }
 }

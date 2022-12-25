@@ -9,7 +9,7 @@ namespace DMP_Project_DAL
 {
     public partial class Event : BasisKlasse
     {
-
+        public DateTime datumUren { get; set; }                     // extra property om table DatumUur (geneste property in te mappen)
 
         public Event(string naam, bool rolstoel, bool kaartenVrij, bool cafeSetting, float prijs, string website, string leeftijd)
         {
@@ -51,8 +51,6 @@ namespace DMP_Project_DAL
                 }
                 return result;
             }
-
-
 
         }
 

@@ -37,8 +37,6 @@ namespace DMP_Project_WPF
             else
             {
                 this.Close();
-                
-
                 EventToevoegen EventToevoegenWindow = new EventToevoegen(locatieNr);
                 EventToevoegenWindow.ShowDialog();
             }
