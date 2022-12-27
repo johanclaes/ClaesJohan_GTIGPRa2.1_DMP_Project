@@ -22,7 +22,7 @@ namespace DMP_Project_DAL
             this.leeftijd = leeftijd;
         }
 
-        public override string this[string columnName]
+        public override string this[string columnName]          // op de 3 toggles rolstoel, kaartenvrij, cafesetting kan je niet testen, website mag leeg zijn
         {
             get
             {

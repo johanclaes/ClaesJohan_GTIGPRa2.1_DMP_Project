@@ -160,7 +160,7 @@ namespace DMP_Project_DAL
                 @eventleeftijd = newevent2.leeftijd,
             };
 
-            using (IDbConnection db = new SqlConnection(ConnectionString))                  //   ***
+            using (IDbConnection db = new SqlConnection(ConnectionString))                  
             {
                 var identity = db.ExecuteScalar<int>(sql, parameters);
                 
@@ -174,7 +174,7 @@ namespace DMP_Project_DAL
                 };
                 var affectedRows = db.Execute(sql2, parameters2);
 
-                // en vervolgens een eventLocatie dat het event met de eigen locatie verbindt
+                // en vervolgens een DatumUur dat het event met het tijdstip verbindt
                 string sql3 = @"INSERT INTO Comedy.DatumUur (eventId, datumTijdstip)
                            VALUES (@eventid, @datumtijdstip)";
                 var parameters3 = new
@@ -188,7 +188,7 @@ namespace DMP_Project_DAL
                 return true;                
             }
 
-            return false;
+            // return false;
         }
 
 

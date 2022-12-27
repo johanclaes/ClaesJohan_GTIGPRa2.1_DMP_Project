@@ -34,11 +34,13 @@ namespace DMP_Project_DAL
                 DateTime volgendeWeekDag = DateTime.Today.AddDays(7);   // 1 week op voorhand inplannen
                 switch (columnName)
                 {
-                    case "naam":
-                        if (datumTijdstip > volgendeWeekDag)
+                    case "datumTijdstip":
+                        if (datumTijdstip < volgendeWeekDag)
                         {
-                            result = "Enkel datums een week VOOR het event graag!";
+                            result = "Planning 1 week op voorhand!";
                         }
+                        break;
+                    default:
                         break;
                 }
                 return result;

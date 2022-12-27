@@ -43,7 +43,7 @@ namespace DMP_Project_WPF
             bool rolstoel1 = (bool)tgRolstoel.IsChecked;
             bool cafesetting1 = (bool)tgCafesetting.IsChecked;
 
-            lijstevents = DatabaseOperations.ZoekEvents2(provincie1,comedian1,maand1,kaartjesvrij1,rolstoel1,cafesetting1);         
+            lijstevents = DatabaseOperations.ZoekEvents(provincie1,comedian1,maand1,kaartjesvrij1,rolstoel1,cafesetting1);         
             dataEvents.ItemsSource = lijstevents;
         }
 
@@ -56,6 +56,7 @@ namespace DMP_Project_WPF
             cmbComedian.ItemsSource = lijstcomedians;
             cmbMaand.ItemsSource = maanden;
             cmbProvincie.ItemsSource = provincies;
+
         }
     }
 }

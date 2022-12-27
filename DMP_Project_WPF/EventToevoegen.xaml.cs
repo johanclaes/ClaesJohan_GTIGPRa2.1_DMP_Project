@@ -56,7 +56,7 @@ namespace DMP_Project_WPF
                 DatumUur eventDatumX = new DatumUur(eventdatumtijd5);
                 Event newevent1 = new Event(eventnaam5, eventrolstoel5, eventkaartenVrij5, eventcafesetting5, eventprijs5, eventwebsite5, eventleeftijd5);
 
-                if (newevent1.IsGeldig())
+                if (newevent1.IsGeldig() && eventDatumX.IsGeldig())
                 {
                     DatabaseOperationsWrite xyz = new DatabaseOperationsWrite();
 
@@ -73,7 +73,7 @@ namespace DMP_Project_WPF
                 }
                 else
                 {
-                    System.Windows.MessageBox.Show(newevent1.Foutmeldingen);
+                    System.Windows.MessageBox.Show(newevent1.Foutmeldingen + eventDatumX.Foutmeldingen);
                 }
             }
             catch (Exception ex)
