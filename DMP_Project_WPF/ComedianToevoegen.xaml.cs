@@ -24,7 +24,7 @@ namespace DMP_Project_WPF
         public ComedianToevoegen(int boekingsburoid)
         {
             InitializeComponent();
-            VulListboxVanDitBuro(boekingsburoid);
+            VulListboxVanDitBuro(boekingsburoid);           // het formulier Boekingsbureau.cs geeft de boekingsburoid mee
             boekingsburoid1 = boekingsburoid;
         }
 
@@ -103,7 +103,6 @@ namespace DMP_Project_WPF
             
         }
 
-
         private void BTNMaakComedianAan_Click(object sender, RoutedEventArgs e)
         {
             // hier moet voornaam en achternaam ingegeven worden, en geboortedatum voor 1 jan 2005
@@ -140,12 +139,11 @@ namespace DMP_Project_WPF
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             VulComboboxComedianZonderBuro();
-
         }
 
         private void BTNComedian_Stopt_Click(object sender, RoutedEventArgs e)
         {
-            // uit de combobox van comedians zonder buro, kan er 1 selecteren om definitief te verwijderen
+            // uit de combobox van comedians zonder buro, kan je 1 selecteren om definitief te verwijderen
 
             selectedComedian = (Comedian)cmbComedians.SelectedItem;
             if (selectedComedian is null)

@@ -21,7 +21,7 @@ namespace DMP_Project_WPF
     /// </summary>
     public partial class ToonPlaylist : Window
     {
-        public ToonPlaylist(string naam3)
+        public ToonPlaylist(string naam3)               // van het formulier Geboortedatum, krijgen we naam van de comedian binnen.
         {
             InitializeComponent();
 

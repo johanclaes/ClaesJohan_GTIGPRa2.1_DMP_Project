@@ -19,19 +19,17 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Provincie" Grid.Row="0" Grid.Column="0" Margin="5" FontFamily="Segoe Script" FontSize="20"/>
+        <TextBlock Text="Provincie" Grid.Row="0" Grid.Column="2" Margin="8.2,5,2.2,5.4" FontFamily="Segoe Script" FontSize="20"/>
         <TextBlock Text="Comedian" Grid.Row="0" Grid.Column="1" Margin="5" FontSize="20" FontFamily="Segoe Script"/>
-        <TextBlock Text="Maand" Grid.Row="0" Grid.Column="2" Margin="5" FontSize="20" FontFamily="Segoe Script"/>
-        <Image Source="comedy.png" Grid.Row="0" Grid.Column="3" Grid.RowSpan="2" Margin="5"/>
-        <ComboBox x:Name="cmbProvincie" Grid.Row="1" Grid.Column="0" Margin="5"/>
+        <Image Source="comedy.png" Grid.Row="0" Grid.RowSpan="2" Margin="7,5,2.4,5"/>
+        <ComboBox x:Name="cmbProvincie" Grid.Row="1" Grid.Column="2" Margin="5.2,4.6,5.2,5"/>
         <ComboBox x:Name="cmbComedian" Grid.Row="1" Grid.Column="1" Margin="5"/>
-        <ComboBox x:Name="cmbMaand" Grid.Row="1" Grid.Column="2" Margin="5"/>
-        <Button x:Name="btnZoek" Content="Zoek" Grid.Row="2" Grid.Column="3" Margin="5" FontFamily="Segoe Print" FontSize="16" Click="BTNZoek_Click"/>
-        <ToggleButton x:Name="tgKaartenvrij" Grid.Row="2" Grid.Column="0" Content="Kaartjes Vrij?" Margin="5" FontFamily="Segoe Script" FontSize="14"/>
+        <Button x:Name="btnZoek" Content="Zoek" Grid.Row="1" Grid.Column="3" Margin="4.8,4.6,4.6,4.6" FontFamily="Segoe Print" FontSize="16" Click="BTNZoek_Click" Grid.RowSpan="2"/>
+        <ToggleButton x:Name="tgKaartenvrij" Grid.Row="2" Grid.Column="0" Content="Kaartjes Vrij?" Margin="6,5,4.4,4.6" FontFamily="Segoe Script" FontSize="14"/>
         <ToggleButton x:Name="tgRolstoel" Content="Rolstoel ?" Grid.Row="2" Grid.Column="1" Margin="5" FontSize="14" FontFamily="Segoe Script"/>
         <ToggleButton x:Name="tgCafesetting" Content="CafeSetting ?" Grid.Row="2" Grid.Column="2" Margin="5" FontFamily="Segoe Script" FontSize="14"/>
-        
-        <DataGrid x:Name="dataEvents" AutoGenerateColumns="true" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Margin="10">
+
+        <DataGrid x:Name="dataEvents" AutoGenerateColumns="true" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Margin="10" SelectionChanged="dataEvents_SelectionChanged">
 
         </DataGrid>
     </Grid>

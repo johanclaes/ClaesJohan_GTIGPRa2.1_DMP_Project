@@ -29,7 +29,6 @@ namespace DMP_Project_WPF
         List<Comedian> lijstcomedians = new List<Comedian>();
         // List<string> stringlijstcomedians = new List<string>();
         List<string> provincies = new List<string>() { "antwerpen", "brabant", "limburg", "oost-vlaanderen", "west-vlaanderen" };
-        List<string> maanden = new List<string>() { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
         List<Event2> lijstevents = new List<Event2>();
 
         private void BTNZoek_Click(object sender, RoutedEventArgs e)
@@ -38,12 +37,12 @@ namespace DMP_Project_WPF
 
             string provincie1 = (string)cmbProvincie.SelectedItem;
             Comedian comedian1 = (Comedian)cmbComedian.SelectedItem;
-            string maand1 = (string)cmbMaand.SelectedItem;
+            
             bool kaartjesvrij1 = (bool)tgKaartenvrij.IsChecked;
             bool rolstoel1 = (bool)tgRolstoel.IsChecked;
             bool cafesetting1 = (bool)tgCafesetting.IsChecked;
 
-            lijstevents = DatabaseOperations.ZoekEvents(provincie1,comedian1,maand1,kaartjesvrij1,rolstoel1,cafesetting1);         
+            lijstevents = DatabaseOperations.ZoekEvents(provincie1,comedian1,kaartjesvrij1,rolstoel1,cafesetting1);         
             dataEvents.ItemsSource = lijstevents;
         }
 
@@ -54,9 +53,27 @@ namespace DMP_Project_WPF
             lijstcomedians = DatabaseOperations.OphalenComediansOpNaamGesorteerd();
             
             cmbComedian.ItemsSource = lijstcomedians;
-            cmbMaand.ItemsSource = maanden;
+            
             cmbProvincie.ItemsSource = provincies;
 
+        }
+
+        private void dataEvents_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Event2 eventje = (Event2)dataEvents.SelectedItem;
+            if (!(eventje is null))
+            {
+                string eventnaam = eventje.EventNaam;
+                lijstcomedians = DatabaseOperations.OphalenComediansVan1Event(eventnaam);
+                string comediansDitEvent = "Comedians: " + System.Environment.NewLine;
+                foreach (var item in lijstcomedians)
+                {
+                    string voornaamAchternaam = item.voornaam + " " + item.naam + System.Environment.NewLine;
+                    comediansDitEvent += voornaamAchternaam;
+                }
+                System.Windows.MessageBox.Show(comediansDitEvent);
+            }
+            
         }
     }
 }

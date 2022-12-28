@@ -182,13 +182,11 @@ namespace DMP_Project_DAL
         }
 
 
-        public static List<Event2> ZoekEvents(string provincie1, Comedian comedian1, string maand1, bool kaartjesvrij1,bool rolstoel1,bool cafesetting1)
+        public static List<Event2> ZoekEvents(string provincie1, Comedian comedian1, bool kaartjesvrij1,bool rolstoel1,bool cafesetting1)
         {
 
             List<Event2> zoeklijst = new List<Event2>();
             List<Event> result5 = new List<Event>();
-
-            
 
             string comedianNaam1;
 
@@ -238,7 +236,7 @@ namespace DMP_Project_DAL
                 // we checken op provincie + event-voorwaarden
                 int currentId = item.id;
 
-                string sqlQuery6 = "SELECT EV.id, EV.naam, EV.prijs, EV.cafeSetting, EVLO.id, LO.id, LO.naam AS plaatsnaam, LO.gemeente   ";
+                string sqlQuery6 = "SELECT EV.id, EV.naam, EV.prijs, EV.cafeSetting, EVLO.id, LO.id, LO.naam, LO.gemeente   ";
                 sqlQuery6 += " FROM Comedy.Event AS EV";
                 sqlQuery6 += " INNER JOIN Comedy.EventLocatie AS EVLO ON EV.id = EVLO.eventId";
                 sqlQuery6 += " INNER JOIN Comedy.Locatie AS LO ON EVLO.locatieId = LO.id";
@@ -247,6 +245,10 @@ namespace DMP_Project_DAL
                 {
                     sqlQuery6 += " AND  EV.kaartenVrij = 'true'  ";
                 }
+                else
+                {
+                    sqlQuery6 += " AND  EV.kaartenVrij = 'false'  ";
+                }
                 if (rolstoel1)
                 {
                     sqlQuery6 += " AND  EV.rolstoel = 'true' ";
@@ -254,6 +256,10 @@ namespace DMP_Project_DAL
                 if (cafesetting1)
                 {
                     sqlQuery6 += " AND  EV.cafeSetting = 'true' ";
+                }
+                else
+                {
+                    sqlQuery6 += " AND  EV.cafeSetting = 'false' ";
                 }
                 if (provincie1 != null)
                 {
@@ -283,6 +289,7 @@ namespace DMP_Project_DAL
              , splitOn: "id,id,id,id").Distinct().ToList();
                 _db.Close();
 
+                // van alle events die aan de voorwaarden voldoen, gaan we nu nog alle data en tijdstippen opvragen
 
                 foreach (var eventGebeuren in result33)
                 {
@@ -302,65 +309,11 @@ namespace DMP_Project_DAL
                         DateTime dendatum = tijdstip.datumTijdstip;
                         float prijs7 = (float)eventGebeuren.prijs;
                         string eventNaam8 = eventGebeuren.naam;
-                        Event2 gezelligeAvond = new Event2(eventNaam8, dendatum, eventGebeuren.naam, "MOL", kaartjesvrij1, prijs7);
+                        Event2 gezelligeAvond = new Event2(eventNaam8, dendatum, eventGebeuren.EventLocaties.First().Locatie.naam, eventGebeuren.EventLocaties.First().Locatie.gemeente, kaartjesvrij1,cafesetting1, prijs7);
                         zoeklijst.Add(gezelligeAvond);
                     }
                 }
 
-            // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            /* 
-            string sqlQuery = "SELECT LO.id, LO.naam, LO.gemeente, EVLO.id, EV.id, EV.naam, EV.prijs, EV.cafeSetting ";
-            sqlQuery += " FROM Comedy.Locatie AS LO";
-            sqlQuery += " INNER JOIN Comedy.EventLocatie AS EVLO ON LO.id = EVLO.locatieId";
-            sqlQuery += " INNER JOIN Comedy.Event AS EV ON  EVLO.eventId = EV.id";
-            if (kaartjesvrij1)
-            {
-                sqlQuery += " WHERE  EV.kaartenVrij = 'true'  ";
-            }
-            else
-            {
-                sqlQuery += " WHERE  EV.kaartenVrij = 'false' ";
-            }
-            if (rolstoel1)
-            {
-                sqlQuery += " AND  EV.rolstoel = 'true' ";
-            }
-            if (cafesetting1)
-            {
-                sqlQuery += " AND  EV.cafeSetting = 'true' ";
-            }
-            if (provincie1 != null)
-            {
-                sqlQuery += " AND  LO.provincie = @provincie ";
-            }
-            
-
-            Start();
-            var result3 = _db.Connectie.Query<Locatie, EventLocatie, Event, Locatie>(sqlQuery, 
-                (Locatie, EventLocatie, Event) =>
-            {
-                
-                Event event5;
-                event5 = Event;
-
-                EventLocatie eventlocatie2;
-                eventlocatie2 = EventLocatie;
-                eventlocatie2.Event = event5;
-
-                Locatie locatie1;
-                locatie1 = Locatie;
-                locatie1.EventLocaties.Add(item: eventlocatie2);
-
-                return locatie1;
-            }
-         , param: new { provincie = provincie1 }
-         , splitOn: "id,id").Distinct().ToList();
-            _db.Close();
-
-            */
-            // Vervolgens gaan we van alle events de datum uurs opvragen, eenzelfde event kan 1 of meerdere keren plaatsvinden
-            
-            
 
             }
 

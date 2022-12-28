@@ -22,7 +22,7 @@ namespace DMP_Project_WPF
     /// </summary>
     public partial class EventToevoegen : Window
     {
-        public EventToevoegen(int locatieNr)
+        public EventToevoegen(int locatieNr)        // vanuit formulier UsernamePassword  wordt het locatienummer waarvoor locatieContact verantwoordelijk is
         {
             InitializeComponent();
             locatienummer = locatieNr;
@@ -64,6 +64,7 @@ namespace DMP_Project_WPF
                     {
                         System.Windows.MessageBox.Show("Het Event werd toegevoegd");
                         txtEventname.Text = "vul in";
+                        txtWebsite.Text = "vul in";
                         VulListboxEventsUwLocatie(locatienummer);
                     }
                     else
@@ -193,11 +194,7 @@ namespace DMP_Project_WPF
             // *** als je een event selecteert, dan toont een messagebox de comedians die komen optreden
 
             Event eventje = (Event)datagridEvents.SelectedItem;
-            if (eventje is null)
-            {
-                System.Windows.MessageBox.Show("Selecteer Event!");
-            }
-            else
+            if (!(eventje is null))
             {
                 string eventnaam = eventje.naam;
                 lijstcomedians = DatabaseOperations.OphalenComediansVan1Event(eventnaam);
@@ -209,7 +206,7 @@ namespace DMP_Project_WPF
                 }
                 System.Windows.MessageBox.Show(comediansDitEvent);
 
-                // eveneens wordt de naam, de website, kaartjes vrij, prijs ... geladen zodat je deze nog kan updaten
+                // eveneens wordt de naam, de website, kaartjes vrij, prijs ... geladen zodat je "prijs, website en kaartjesVrij" nog kan updaten
 
                 txtEventname.Text = eventje.naam;
                 txtPrijs.Text = eventje.prijs.ToString();
@@ -230,7 +227,7 @@ namespace DMP_Project_WPF
                     rbCafesetting.IsChecked = false;
                     rbSchouwburg.IsChecked = true;
                 }
-                if ((bool)eventje.kaartenVrij )
+                if ((bool)eventje.kaartenVrij)
                 {
                     cbKaartenVrij.IsChecked = true;
                 }
@@ -246,6 +243,10 @@ namespace DMP_Project_WPF
                 {
                     cbRolstoel.IsChecked = false;
                 }
+            }
+            else
+            {
+                
 
             }
         }
