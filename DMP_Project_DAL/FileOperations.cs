@@ -14,7 +14,7 @@ namespace DMP_Project_DAL
             using (StreamWriter writer = new StreamWriter("foutenbestand.txt", true))
             {
                 // true wil zeggen : vanachter toevoegen (append op true)
-                writer.WriteLine(DateTime.Now.ToString("HH:mm:ss"));
+                writer.WriteLine(DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
                 writer.WriteLine(waarInProgramma);
                 writer.WriteLine(fout.GetType().Name);
                 writer.WriteLine(fout.Message);

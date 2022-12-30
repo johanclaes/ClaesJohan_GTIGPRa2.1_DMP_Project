@@ -45,9 +45,12 @@ namespace DMP_Project_DAL
                 }
                 return result;
             }
-
         }
 
+        public override string ToString()
+        {
+            return this.datumTijdstip.ToString("dddd, dd MMMM yyyy");
+        }
 
 
     }

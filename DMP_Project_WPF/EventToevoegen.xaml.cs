@@ -193,62 +193,70 @@ namespace DMP_Project_WPF
         {
             // *** als je een event selecteert, dan toont een messagebox de comedians die komen optreden
 
-            Event eventje = (Event)datagridEvents.SelectedItem;
-            if (!(eventje is null))
+
+            try
             {
-                string eventnaam = eventje.naam;
-                lijstcomedians = DatabaseOperations.OphalenComediansVan1Event(eventnaam);
-                string comediansDitEvent = "Comedians: " + System.Environment.NewLine;
-                foreach (var item in lijstcomedians)
+                Event eventje = (Event)datagridEvents.SelectedItem;
+                if (!(eventje is null))
                 {
-                    string voornaamAchternaam = item.voornaam + " " + item.naam + System.Environment.NewLine;
-                    comediansDitEvent += voornaamAchternaam;
-                }
-                System.Windows.MessageBox.Show(comediansDitEvent);
+                    string eventnaam = eventje.naam;
+                    lijstcomedians = DatabaseOperations.OphalenComediansVan1Event(eventnaam);
+                    string comediansDitEvent = "Comedians: " + System.Environment.NewLine;
+                    foreach (var item in lijstcomedians)
+                    {
+                        string voornaamAchternaam = item.voornaam + " " + item.naam + System.Environment.NewLine;
+                        comediansDitEvent += voornaamAchternaam;
+                    }
+                    System.Windows.MessageBox.Show(comediansDitEvent);
 
-                // eveneens wordt de naam, de website, kaartjes vrij, prijs ... geladen zodat je "prijs, website en kaartjesVrij" nog kan updaten
+                    // eveneens wordt de naam, de website, kaartjes vrij, prijs ... geladen zodat je "prijs, website en kaartjesVrij" nog kan updaten
 
-                txtEventname.Text = eventje.naam;
-                txtPrijs.Text = eventje.prijs.ToString();
-                txtLeeftijd.Text = eventje.leeftijd;
-                txtWebsite.Text = eventje.website;
-                DateTime datumUur1 = eventje.DatumUurs.First().datumTijdstip;
-                calDatum.SelectedDate = datumUur1;
-                string Timeonly = datumUur1.ToShortTimeString();
-                txtTijdstip.Text = Timeonly;
+                    txtEventname.Text = eventje.naam;
+                    txtPrijs.Text = eventje.prijs.ToString();
+                    txtLeeftijd.Text = eventje.leeftijd;
+                    txtWebsite.Text = eventje.website;
+                    DateTime datumUur1 = eventje.DatumUurs.First().datumTijdstip;
+                    calDatum.SelectedDate = datumUur1;
+                    string Timeonly = datumUur1.ToShortTimeString();
+                    txtTijdstip.Text = Timeonly;
 
-                if ((bool)eventje.cafeSetting)
-                {
-                    rbCafesetting.IsChecked = true;
-                    rbSchouwburg.IsChecked = false;
+                    if ((bool)eventje.cafeSetting)
+                    {
+                        rbCafesetting.IsChecked = true;
+                        rbSchouwburg.IsChecked = false;
+                    }
+                    else
+                    {
+                        rbCafesetting.IsChecked = false;
+                        rbSchouwburg.IsChecked = true;
+                    }
+                    if ((bool)eventje.kaartenVrij)
+                    {
+                        cbKaartenVrij.IsChecked = true;
+                    }
+                    else
+                    {
+                        cbKaartenVrij.IsChecked = false;
+                    }
+                    if ((bool)eventje.rolstoel)
+                    {
+                        cbRolstoel.IsChecked = true;
+                    }
+                    else
+                    {
+                        cbRolstoel.IsChecked = false;
+                    }
                 }
-                else
-                {
-                    rbCafesetting.IsChecked = false;
-                    rbSchouwburg.IsChecked = true;
-                }
-                if ((bool)eventje.kaartenVrij)
-                {
-                    cbKaartenVrij.IsChecked = true;
-                }
-                else
-                {
-                    cbKaartenVrij.IsChecked = false;
-                }
-                if ((bool)eventje.rolstoel)
-                {
-                    cbRolstoel.IsChecked = true;
-                }
-                else
-                {
-                    cbRolstoel.IsChecked = false;
-                }
-            }
-            else
-            {
                 
-
             }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show("er niet naast clicken.");       // als je op de onderste lege regel clickt
+                FileOperations.foutLoggen(ex, "EventsSelectionChanged");
+            }
+
+            
+            
         }
     }
 }

@@ -51,11 +51,8 @@ namespace DMP_Project_WPF
             // 3 comboboxen worden opgevuld
 
             lijstcomedians = DatabaseOperations.OphalenComediansOpNaamGesorteerd();
-            
             cmbComedian.ItemsSource = lijstcomedians;
-            
             cmbProvincie.ItemsSource = provincies;
-
         }
 
         private void dataEvents_SelectionChanged(object sender, SelectionChangedEventArgs e)

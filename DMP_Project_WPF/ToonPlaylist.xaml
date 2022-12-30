@@ -19,8 +19,8 @@
         <Label x:Name="lblComedianName" Grid.Row="0" Grid.Column="1" FontSize="20" FontFamily="Segoe Script"/>
 
 
-        <DataGrid x:Name="dataComedians" AutoGenerateColumns="true" Margin="5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-
+        <DataGrid x:Name="dataComedians" AutoGenerateColumns="true"  Margin="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            
         </DataGrid>
     </Grid>
 </Window>
