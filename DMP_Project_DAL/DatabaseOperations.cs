@@ -88,13 +88,14 @@ namespace DMP_Project_DAL
 
         public static List<PlayListEvent> MaakPlaylist2(string naam3)
         {
-            string sqlQuery = "SELECT EV.id, EV.naam, EV.cafeSetting, EventComedian.id, CO.id, DA.datumtijdstip  ";
+            // string sqlQuery = "SELECT EV.id, EV.naam, EV.cafeSetting, EventComedian.id, CO.id, DA.datumtijdstip  ";
+            string sqlQuery = "SELECT EV.id, EV.naam, EV.cafeSetting, EventComedian.id, CO.id  ";
             sqlQuery += " FROM Comedy.Event AS EV";
             sqlQuery += " INNER JOIN Comedy.EventComedian ON EV.id = EventComedian.eventId";
             sqlQuery += " INNER JOIN Comedy.Comedian AS CO ON  EventComedian.comedianId = CO.id";
-            sqlQuery += " INNER JOIN Comedy.DatumUur AS DA ON EV.id = DA.eventId";
+            // sqlQuery += " INNER JOIN Comedy.DatumUur AS DA ON EV.id = DA.eventId";
             sqlQuery += " WHERE  CO.naam = @naam3 ";
-            sqlQuery += " ORDER BY DA.datumTijdstip";
+            // sqlQuery += " ORDER BY DA.datumTijdstip";
 
             List<PlayListEvent> playlist = new List<PlayListEvent>();
 
@@ -115,7 +116,7 @@ namespace DMP_Project_DAL
 
                 string sql2 = "SELECT EV.id, EV.naam, EVLO.id, LO.id, LO.naam, LO.gemeente, LOCO.id, LOCO.naam, LOCO.voornaam, LOCO.telefoonNummer  ";
                 sql2 += " FROM Comedy.Event AS EV";
-                sql2 += " INNER JOIN Comedy.DatumUur AS DA ON EV.id = DA.eventId";
+                // sql2 += " INNER JOIN Comedy.DatumUur AS DA ON EV.id = DA.eventId";
                 sql2 += " INNER JOIN Comedy.EventLocatie AS EVLO ON EV.id = EVLO.eventId";
                 sql2 += " INNER JOIN Comedy.Locatie AS LO ON  EVLO.locatieId = LO.id";
                 sql2 += " INNER JOIN Comedy.LocatieContact AS LOCO ON LO.id = LOCO.locatieId";
@@ -151,31 +152,41 @@ namespace DMP_Project_DAL
                 naamVerantwoordelijke += result2.First().EventLocaties.First().Locatie.LocatieContacts.First().naam;
                 string telefoonVerantwoordelijke = result2.First().EventLocaties.First().Locatie.LocatieContacts.First().telefoonNummer;
 
-                string sql3 = "SELECT EV.id, DA.id, DA.datumTijdstip  ";
-                sql3 += " FROM Comedy.Event AS EV";
-                sql3 += " INNER JOIN Comedy.DatumUur AS DA ON EV.id = DA.eventId";
-                sql3 += " WHERE  EV.naam = @naam3 ";
+                
+                    string sql3 = "SELECT EV.id, DA.id, DA.datumTijdstip  ";
+                    sql3 += " FROM Comedy.Event AS EV";
+                    sql3 += " INNER JOIN Comedy.DatumUur AS DA ON EV.id = DA.eventId";
+                    sql3 += " WHERE  EV.naam = @naam3 ";
 
-                Start();
-                var result3 = _db.Connectie.Query<Event, DatumUur, Event>(sql3, (Event, DatumUur) =>
-                {
-                    DatumUur datumuur5;
-                    datumuur5 = DatumUur;
+                    Start();
+                    var result3 = _db.Connectie.Query<Event, DatumUur, Event>(sql3, (Event, DatumUur) =>
+                    {
+                        DatumUur datumuur5;
+                        datumuur5 = DatumUur;
 
-                    Event event1;
-                    event1 = Event;
-                    event1.DatumUurs.Add(datumuur5);
+                        Event event1;
+                        event1 = Event;
+                        event1.DatumUurs.Add(datumuur5);
 
-                    return event1;
-                }
-             , param: new { naam3 = naamEventje }
-             , splitOn: "id,id,id").Distinct().ToList();
-                _db.Close();
+                        return event1;
+                    }
+                 , param: new { naam3 = naamEventje }
+                 , splitOn: "id,id,id").Distinct().ToList();
+                    _db.Close();
 
-                DateTime tijdstipEvent = result3.First().DatumUurs.First().datumTijdstip;
+                    foreach (var tijdstip in result3)
+                    {
+                        // DateTime tijdstipEvent = tijdstip.First().DatumUurs.First().datumTijdstip;
+                        DateTime tijdstipEvent = tijdstip.DatumUurs.First().datumTijdstip;
 
-                PlayListEvent gezelligeAvond = new PlayListEvent(naamEventje, eventLocatietje, eventGemeente, tijdstipEvent, naamVerantwoordelijke, telefoonVerantwoordelijke, (bool)comedyEvent1.cafeSetting);
-                playlist.Add(gezelligeAvond);
+                        PlayListEvent gezelligeAvond = new PlayListEvent(naamEventje, eventLocatietje, eventGemeente, tijdstipEvent, naamVerantwoordelijke, telefoonVerantwoordelijke, (bool)comedyEvent1.cafeSetting);
+                        playlist.Add(gezelligeAvond);
+                    }
+
+                    
+                
+
+                
             }
 
             return playlist;

@@ -31,16 +31,6 @@ namespace DMP_Project_WPF
 
             dataComedians.ItemsSource = lijstplaylistevents;
 
-            // Datatable dt = new datatable();
-
-            // dataComedians.Columns.f
-
-            int x = DataGridTextColumn.HeaderProperty.Name.Length;              // dit werkt ... toont 6
-            // dataComedians.Columns[4];
-            // dataComedians.Items[4].ToString();
-            // DataGrid.GenerateColumns;
-
-            // datagridVie
 
             lblComedianName.Content = naam3;                                    // de naam van de comedian wordt bovenaan getoond
         }

@@ -19,7 +19,16 @@
         <Label x:Name="lblComedianName" Grid.Row="0" Grid.Column="1" FontSize="20" FontFamily="Segoe Script"/>
 
 
-        <DataGrid x:Name="dataComedians" AutoGenerateColumns="true"  Margin="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+        <DataGrid x:Name="dataComedians" AutoGenerateColumns="False"  Margin="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Event-Naam" Binding="{Binding EventNaam}"/>
+                <DataGridTextColumn Header="Waar ?" Binding="{Binding LocatieNaam}"/>
+                <DataGridTextColumn Header="Gemeente" Binding="{Binding LocatieGemeente}"/>
+                <DataGridTextColumn Header="Datum-Uur" Binding="{Binding Tijdstip}"/>
+                <DataGridTextColumn Header="Verantwoordelijke" Binding="{Binding LocatieContact}"/>
+                <DataGridTextColumn Header="Telefoon" Binding="{Binding ContactTelefoon}"/>
+                <DataGridTextColumn Header="CafeSetting"  Binding="{Binding CafeSetting}" IsReadOnly="True"/>
+            </DataGrid.Columns>
             
         </DataGrid>
     </Grid>

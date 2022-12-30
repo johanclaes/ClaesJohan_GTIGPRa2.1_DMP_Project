@@ -27,7 +27,6 @@ namespace DMP_Project_WPF
         }
 
         List<Comedian> lijstcomedians = new List<Comedian>();
-        // List<string> stringlijstcomedians = new List<string>();
         List<string> provincies = new List<string>() { "antwerpen", "brabant", "limburg", "oost-vlaanderen", "west-vlaanderen" };
         List<Event2> lijstevents = new List<Event2>();
 

@@ -80,6 +80,7 @@
     <Compile Include="DatabaseConnection.cs" />
     <Compile Include="DatabaseOperations.cs" />
     <Compile Include="DatabaseOperationsWrite.cs" />
+    <Compile Include="DateConverter.cs" />
     <Compile Include="DatumUur.cs">
       <DependentUpon>ComedyModel.tt</DependentUpon>
     </Compile>

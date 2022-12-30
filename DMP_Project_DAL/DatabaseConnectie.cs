@@ -25,7 +25,7 @@ namespace DMP_Project_DAL
             }
             catch (Exception ex)
             {
-
+                FileOperations.foutLoggen(ex, "Connecteren naar dB");
                 throw new Exception("Er is probleem met SQL-connectie.");
             }
         }
