@@ -70,7 +70,7 @@ namespace DMP_Project_DAL
 
         public static int OpzoekenLocatieOpBasisUsernamePassword(string sqlQuery, string username, string password)
         {
-            // we geven de FK terug die verwijst naar locatie
+            // we geven de FK terug die verwijst naar locatie, als natuurlijk username / password gevonden wordt
             
             Start();
             var result = _db.Connectie.Query<LocatieContact>(sqlQuery, param: new { loginName = username  }).ToList();
