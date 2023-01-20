@@ -79,7 +79,10 @@ namespace DMP_Project_DAL
             int locatieIdNr = -1;
             if (result.Count > 0)
             {
-                locatieIdNr = result.First().locatieId;
+                if (result.First().loginPassword == password )
+                {
+                    locatieIdNr = result.First().locatieId;
+                }
             }
            
             return locatieIdNr;

@@ -116,6 +116,9 @@ namespace DMP_Project_WPF
                     if (xyz.ComedianToevoegen(comedian8))
                     {
                         MessageBox.Show("Comedian werd toegevoegd");
+                        txtNaam.Text = "Naam";
+                        txtVoornaam.Text = "Voornaam";
+                        calGeboortedatum.SelectedDate = DateTime.Today;
                         VulComboboxComedianZonderBuro();
                     }
                     else
