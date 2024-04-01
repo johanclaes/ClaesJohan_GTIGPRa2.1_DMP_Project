@@ -90,7 +90,7 @@ namespace DMP_Project_DAL
 
         public bool ComedianStoptErmee(string comedianNaam)
         {
-            // 1st id opvragen van die comedian     
+            // 1st id opvragen van die comedian ******************
 
             string sql1 = @"SELECT id FROM Comedy.Comedian";
             sql1 += " WHERE naam = @comedianNaam ";
@@ -103,7 +103,7 @@ namespace DMP_Project_DAL
 
 
 
-            // 2de  alle eventcomedian deleten waar comedianid 
+            // 2de  alle eventcomedian deleten waar comedianid **********
             string sql2 = @"DELETE FROM Comedy.EventComedian
                            WHERE comedianid = @comedianid";
 
@@ -118,7 +118,7 @@ namespace DMP_Project_DAL
             }
 
 
-            // 3de ook comedian zelf delete
+            // 3de ook comedian zelf delete ****************
 
             string sql3 = @"DELETE FROM Comedy.Comedian
                            WHERE naam = @comediannaam";
